@@ -5,8 +5,8 @@
 #include "../include/shell.h"
 kmain(){
 	isr_install();
-	clearScreen();
-	print("Booting Up Birb OS\nSucessfully Booted up\n");
+	print("\n\n\n\n\n\n\n\n\n");
+	print("Starting 1.0-birbOS");
 	print("\n\n");
 	print("oooooo____oo__________oo_________oooo_____ooooo__\n");
 	print("oo____oo______oo_ooo__oooooo___oo____oo__oo___oo_\n");
