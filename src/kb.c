@@ -1,7 +1,16 @@
 
 #include "../include/kb.h"
-string readStr()
-{
+static unsigned long int next = 1;
+int rand( void ){
+    next = next * 1103515245 + 12345;
+    return (unsigned int)(next / 65536) % 32768;
+}
+
+void srand( unsigned int seed ){
+    next = seed;
+}
+
+string readStr(){
     char buff;
     string buffstr = (string) malloc(200);
     uint8 i = 0;
@@ -15,67 +24,74 @@ string readStr()
       /*case 1:
                 printch('(char)27);           Escape button
                 buffstr[i] = (char)27;
-                i++;
+                i++;rand();
                 break;*/
         case 2:
                 printch('1');
                 buffstr[i] = '1';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 3:
                 printch('2');
                 buffstr[i] = '2';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 4:
                 printch('3');
                 buffstr[i] = '3';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 5:
                 printch('4');
                 buffstr[i] = '4';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 6:
                 printch('5');
                 buffstr[i] = '5';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 7:
                 printch('6');
                 buffstr[i] = '6';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 8:
                 printch('7');
                 buffstr[i] = '7';
-                i++;
+                i++;rand();
+		rand();
                 break;
         case 9:
                 printch('8');
                 buffstr[i] = '8';
-                i++;
+                i++;rand();
                 break;
         case 10:
                 printch('9');
                 buffstr[i] = '9';
-                i++;
+                i++;rand();
                 break;
         case 11:
                 printch('0');
                 buffstr[i] = '0';
-                i++;
+                i++;rand();
                 break;
         case 12:
                 printch('-');
                 buffstr[i] = '-';
-                i++;
+                i++;rand();
                 break;
         case 13:
                 printch('=');
                 buffstr[i] = '=';
-                i++;
+                i++;rand();
                 break;
         case 14:
                 printch('\b');
@@ -90,218 +106,218 @@ string readStr()
        /* case 15:
                 printch('\t');          Tab button
                 buffstr[i] = '\t';
-                i++;
+                i++;rand();
                 break;*/
         case 16:
                 printch('q');
                 buffstr[i] = 'q';
-                i++;
+                i++;rand();
                 break;
         case 17:
                 printch('w');
                 buffstr[i] = 'w';
-                i++;
+                i++;rand();
                 break;
         case 18:
                 printch('e');
                 buffstr[i] = 'e';
-                i++;
+                i++;rand();
                 break;
         case 19:
                 printch('r');
                 buffstr[i] = 'r';
-                i++;
+                i++;rand();
                 break;
         case 20:
                 printch('t');
                 buffstr[i] = 't';
-                i++;
+                i++;rand();
                 break;
         case 21:
                 printch('y');
                 buffstr[i] = 'y';
-                i++;
+                i++;rand();
                 break;
         case 22:
                 printch('u');
                 buffstr[i] = 'u';
-                i++;
+                i++;rand();
                 break;
         case 23:
                 printch('i');
                 buffstr[i] = 'i';
-                i++;
+                i++;rand();
                 break;
         case 24:
                 printch('o');
                 buffstr[i] = 'o';
-                i++;
+                i++;rand();
                 break;
         case 25:
                 printch('p');
                 buffstr[i] = 'p';
-                i++;
+                i++;rand();
                 break;
         case 26:
                 printch('[');
                 buffstr[i] = '[';
-                i++;
+                i++;rand();
                 break;
         case 27:
                 printch(']');
                 buffstr[i] = ']';
-                i++;
+                i++;rand();
                 break;
         case 28:
                // printch('\n');
                // buffstr[i] = '\n';
-                  i++;
+                  i++;rand();
                reading = 0;
                 break;
       /*  case 29:
                 printch('q');           Left Control
                 buffstr[i] = 'q';
-                i++;
+                i++;rand();
                 break;*/
         case 30:
                 printch('a');
                 buffstr[i] = 'a';
-                i++;
+                i++;rand();
                 break;
         case 31:
                 printch('s');
                 buffstr[i] = 's';
-                i++;
+                i++;rand();
                 break;
         case 32:
                 printch('d');
                 buffstr[i] = 'd';
-                i++;
+                i++;rand();
                 break;
         case 33:
                 printch('f');
                 buffstr[i] = 'f';
-                i++;
+                i++;rand();
                 break;
         case 34:
                 printch('g');
                 buffstr[i] = 'g';
-                i++;
+                i++;rand();
                 break;
         case 35:
                 printch('h');
                 buffstr[i] = 'h';
-                i++;
+                i++;rand();
                 break;
         case 36:
                 printch('j');
                 buffstr[i] = 'j';
-                i++;
+                i++;rand();
                 break;
         case 37:
                 printch('k');
                 buffstr[i] = 'k';
-                i++;
+                i++;rand();
                 break;
         case 38:
                 printch('l');
                 buffstr[i] = 'l';
-                i++;
+                i++;rand();
                 break;
         case 39:
                 printch(';');
                 buffstr[i] = ';';
-                i++;
+                i++;rand();
                 break;
         case 40:
                 printch((char)44);               //   Single quote (')
                 buffstr[i] = (char)44;
-                i++;
+                i++;rand();
                 break;
         case 41:
                 printch((char)44);               // Back tick (`)
                 buffstr[i] = (char)44;
-                i++;
+                i++;rand();
                 break;
      /* case 42:                                 Left shift 
                 printch('q');
                 buffstr[i] = 'q';
-                i++;
+                i++;rand();
                 break;
         case 43:                                 \ (< for somekeyboards)   
                 printch((char)92);
                 buffstr[i] = 'q';
-                i++;
+                i++;rand();
                 break;*/
         case 44:
                 printch('z');
                 buffstr[i] = 'z';
-                i++;
+                i++;rand();
                 break;
         case 45:
                 printch('x');
                 buffstr[i] = 'x';
-                i++;
+                i++;rand();
                 break;
         case 46:
                 printch('c');
                 buffstr[i] = 'c';
-                i++;
+                i++;rand();
                 break;
         case 47:
                 printch('v');
                 buffstr[i] = 'v';
-                i++;
+                i++;rand();
                 break;                
         case 48:
                 printch('b');
                 buffstr[i] = 'b';
-                i++;
+                i++;rand();
                 break;               
         case 49:
                 printch('n');
                 buffstr[i] = 'n';
-                i++;
+                i++;rand();
                 break;                
         case 50:
                 printch('m');
                 buffstr[i] = 'm';
-                i++;
+                i++;rand();
                 break;               
         case 51:
                 printch(',');
                 buffstr[i] = ',';
-                i++;
+                i++;rand();
                 break;                
         case 52:
                 printch('.');
                 buffstr[i] = '.';
-                i++;
+                i++;rand();
                 break;            
         case 53:
                 printch('/');
                 buffstr[i] = '/';
-                i++;
+                i++;rand();
                 break;            
         case 54:
                 printch('.');
                 buffstr[i] = '.';
-                i++;
+                i++;rand();
                 break;            
         case 55:
                 printch('/');
                 buffstr[i] = '/';
-                i++;
+                i++;rand();
                 break;            
       /*case 56:
                 printch(' ');           Right shift
                 buffstr[i] = ' ';
-                i++;
+                i++;rand();
                 break;*/           
         case 57:
                 printch(' ');
                 buffstr[i] = ' ';
-                i++;
+                i++;rand();
                 break;
             }
         }
