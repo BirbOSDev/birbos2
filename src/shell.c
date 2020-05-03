@@ -5,7 +5,7 @@ void launch_shell(int n)
 	int counter = 0;
 	do
 	{
-			print(">>>");
+                    print(">>>");
 		    ch = readStr(); //memory_copy(readStr(), ch,100);
 		    if(strEql(ch,"clear"))
 		    {
@@ -15,13 +15,29 @@ void launch_shell(int n)
 		    {
 		    	echo();
 		    }
+		    else if(strEql(ch,"ls"))
+		    {
+			print("\nbruh there is no file system\n");
+		    }
 		    else if(strEql(ch,"about"))
 		    {
-		    	print("\nBirb OS 1.0.0\n");
+			  print("\n");
+			  print("oooooo____oo__________oo____________oooo_____ooooo__\n");
+		          print("oo____oo______oo_ooo__oooooo______oo____oo__oo___oo_\n");
+		          print("oooooooo__oo__ooo___o_oo___oo____oo______oo__oo_____\n");
+		          print("oo____oo__oo__oo______oo___oo____oo______oo____oo___\n");
+        		  print("oo____oo__oo__oo______oo___oo_____oo____oo__oo___oo_\n");
+        		  print("ooooooo__oooo_oo______oooooo________oooo_____ooooo__\n");
+        		  print("____________________________________________________\n");
+		          print("\nBirb OS 1.0.0\n");
 		    }
 		    else if(strEql(ch,"help"))
 		    {
 		    	help();
+		    }
+		    else if(strEql(ch,""))
+		    {
+			print("\n");
 		    }
 		    else
 		    {
@@ -89,13 +105,8 @@ void print_matrix(int matrix[][100],int rows,int cols)
 
 void help()
 {
-	
 	print("\nclear     : Clears the screen");
-	
 	print("\necho      : Reprint a given text");
-	
 	print("\nabout     : Prints out the version number of os");
-	
 	print("\n\n");
 }
-
