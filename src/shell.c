@@ -32,13 +32,19 @@ void launch_shell(int n)
 		    else if(strEql(ch,"calc")){
 			calc();
 		    }
+		    else if(strEql(ch,"frog")){
+			print("\nforg\n");
+		    }
+		    else if(strEql(ch,"die")){
+			die();
+		    }
 		    else if(strEql(ch,"")){
 			print("\n");
 		    }
 		    else{
 		            print("\nBad command!\n");
 		            print("");
-		    } 
+		    }
 	} while (!strEql(ch,"exit"));
 }
 
@@ -95,6 +101,7 @@ void help(){
 	print("\necho      : Reprint a given text");
 	print("\nabout     : Prints outs detail of the os");
 	print("\ncalc      : Calculator");
+	print("\ndie       : Halts the system");
 	print("\n\n");
 }
 
@@ -154,4 +161,9 @@ void calc(){
 	else{
 		print("\nenter valid operation rerun the program\n");
 	}
+}
+void die(){
+	clearScreen();
+	print("\n Good Job you halted the cpu go now power it off or restart it");
+	asm("hlt");
 }
