@@ -17,7 +17,7 @@ void launch_shell(int n)
 		    }
 		    else if(strEql(ch,"about")){
 			  print("\n");
-			  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
+			  	  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
 		          print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
 		          print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
 		          print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
@@ -164,6 +164,11 @@ void calc(){
 }
 void die(){
 	clearScreen();
-	print("\n Good Job you halted the cpu go now power it off or restart it");
+	int i = 0;
+	while(i < 11){
+		print("\n Good Job you halted the cpu go now power it off or restart it");
+		i++;	
+	}	
 	asm("hlt");
 }
+
