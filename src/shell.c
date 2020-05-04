@@ -29,6 +29,9 @@ void launch_shell(int n)
 		    else if(strEql(ch,"help")){
 		    	help();
 		    }
+		    else if(strEql(ch,"novo")){
+			novo();
+		    }
 		    else if(strEql(ch,"frog")){
 			print("\nfrog\n");}
 		    else if(strEql(ch,"calc")){
@@ -103,7 +106,7 @@ void help(){
 	print("\necho      : Types given text");
 	print("\nabout     : Prints out details about the OS");
 	print("\nabout2    : Prints xandrei's version of about");
-	print("\ncalc      : Calculator");
+	print("\ncalc      : Calculator (broken)");
 	print("\ndie       : Halts the CPU");
 	print("\nfrog      : frog");
 	print("\n\n");
@@ -146,8 +149,20 @@ void div(){
         print(int_to_string(z));
         print("\n");
 }
+void novo(){
+string text1 = (string) malloc(128);
+string text2 = (string) malloc(128);
+print("\ntext1: ");
+text1 = readStr();
+print("\ntext2: ");
+text2 = readStr();
+}
 
 void calc(){
+	print("\ncalculator is broken. please go away.\n");
+	print("i mean you could get the source code and enable it yourself i didn't erase anything\n");
+}
+void calc69420(){
 	print("\nEnter 1 to add, 2 to subtract, 3 to multiply and 4 to divide\n");
 	string opcode = readStr();
 	if(strEql(opcode,"1")){
