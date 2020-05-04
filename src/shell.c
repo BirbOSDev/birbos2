@@ -18,13 +18,13 @@ void launch_shell(int n)
 		    else if(strEql(ch,"about")){
 			  print("\n");
 			  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
-		      print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
-		      print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
-		      print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
-        	  print("oo____oo__oo__oo______oo___oo___oo____oo__oo___oo_\n");
-       		  print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
-       		  print("____________________________________________________\n");
-	          print("\nBirb OS 1.0.0\n");
+		          print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
+		          print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
+		          print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
+        		  print("oo____oo__oo__oo______oo___oo___oo____oo__oo___oo_\n");
+        		  print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
+        		  print("____________________________________________________\n");
+		          print("\nBirb OS 1.0.0\n");
 		    }
 		    else if(strEql(ch,"help")){
 		    	help();
