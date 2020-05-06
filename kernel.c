@@ -3,7 +3,7 @@
 #include "Drivers/VGA.c"
 #include "Drivers/keyboard.c"
 #include "types.h"
-//char* string;
+
 void * malloc(int nbytes)
 {
 	char variable[nbytes];
@@ -87,6 +87,7 @@ void kernel_main(void) {
 
         }
         else if(strequ(cmd,"calc")){
+            print("Enter + to add,- to subtract,* to multiply,/ to divide\n");
             string opcode = input();
             if(strequ(opcode,"+")){
             print("\nNum1:\n");
