@@ -153,9 +153,9 @@ void novo(){
 string tdddext1 = 0x1000;
 string text2 = 0x100A;
 print("\ntext1: ");
-tdddext1 = readStr();
+tdddext1 = "bean";
 print("\ntext2: ");
-text2 = readStr();
+text2 = "master";
 print("\n");
 print(tdddext1);
 print(" ");
