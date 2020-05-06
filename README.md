@@ -5,7 +5,7 @@ This is the new BirbOS code and it is compatible with the newly written drivers
 * Keyboard driver supports special characters and also shift support!
 * Calculator exists
 * About command outputs Birb OS 0.3 (New Drivers Version)
-* 
+
 
 
 Thats all is present in this new build
