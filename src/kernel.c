@@ -6,7 +6,7 @@
 kmain(){
 	isr_install();
 	print("\n\n\n\n\n\n\n\n\n");
-	print("Starting 1.0-birbOS");
+	print("Starting version 1.0-birbOS");
 	print("\n\n");
 	print("oooooo____oo__________oo_________oooo_____ooooo__\n");
 	print("oo____oo______oo_ooo__oooooo___oo____oo__oo___oo_\n");
@@ -15,6 +15,7 @@ kmain(){
 	print("oo____oo__oo__oo______oo___oo__oo____oo__oo___oo_\n");
 	print("ooooooo__oooo_oo______oooooo_____oooo_____ooooo__\n");
 	print("____________________________________________________\n");
-	print("\n\nWelcome to Birb OS\n");
+	print("\n\nWelcome to birbOS (this build is broken and incomplete)\n");
+	print("\nNovoBOT bot\n");
     	launch_shell(0);
 }
