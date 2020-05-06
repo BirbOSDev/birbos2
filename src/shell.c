@@ -156,6 +156,9 @@ print("\ntext1: ");
 text1 = readStr();
 print("\ntext2: ");
 text2 = readStr();
+print("\n");
+print(text1);
+print(text2);
 }
 
 void calc(){
