@@ -150,15 +150,17 @@ void div(){
         print("\n");
 }
 void novo(){
-string text1 = (string) malloc(128);
-string text2 = (string) malloc(128);
+string tdddext1 = 0x1000;
+string text2 = 0x100A;
 print("\ntext1: ");
-text1 = readStr();
+tdddext1 = readStr();
 print("\ntext2: ");
 text2 = readStr();
 print("\n");
-print(text1);
+print(tdddext1);
+print(" ");
 print(text2);
+print("\n");
 }
 
 void calc(){
