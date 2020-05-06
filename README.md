@@ -1,11 +1,11 @@
 **BirbOS NSG650 build**
-This is the BirbOS NSG650 build
-Features in this
-* RNG function called every keypress
-* Halt message is Good Job you halted the cpu go now power it off or restart it
-* Calculator Works in this build
-* Frog command prints out forg and the rng value for debugging purpose
-* Hallt message loops 10 times before halt => Version 0.1.6 NSG650 build 
+This is the new BirbOS code and it is compatible with the newly written drivers
+* Die command clears screen and halts the cpu. The message is Good Job you halted the cpu go now power it off or restart it
+* It has itoa and atoa but for compatibilty purposes it also has inttostring and strtoint
+* Keyboard driver supports special characters and also shift support!
+* Calculator exists
+* About command outputs Birb OS 0.3 (New Drivers Version)
+* 
 
-You have to compile the file in this build compiled file will be uploaded when Version 1.0 is completed
-Current Version: 0.1.6
+
+Thats all is present in this new build
