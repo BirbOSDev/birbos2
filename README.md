@@ -1,4 +1,4 @@
-**BirbOS NSG650 build**
+<h3>**BirbOS NSG650 build**</h3>
 This is the new BirbOS code and it is compatible with the newly written drivers
 * Die command clears screen and halts the cpu. The message is Good Job you halted the cpu go now power it off or restart it
 * It has itoa and atoa but for compatibilty purposes it also has inttostring and strtoint
