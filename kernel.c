@@ -1,8 +1,10 @@
-#include "all_drivers.h"
+//#include "all_drivers.h"
 #include "common.h"
 #include "Drivers/VGA.c"
 #include "Drivers/keyboard.c"
 #include "types.h"
+//#include "Drivers/rtc.c"
+//#include "Drivers/irq.h"
 
 void * malloc(int nbytes)
 {
@@ -60,7 +62,15 @@ void kernel_main(void) {
   //  terminal_initialize();
   //  terminal_writestring("Hello, world!\n");
     terminal_initialize();
-    print("Hello World\n");
+      print("\n");
+			  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
+		          print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
+		          print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
+		          print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
+        		  print("oo____oo__oo__oo______oo___oo___oo____oo__oo___oo_\n");
+        		  print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
+        		  print("____________________________________________________\n");
+    print("Welcome to BirbOS !\nType in 'help' to view all the commands availaible\n");
     while(true){
         print("birb>");
         char* cmd = input();
@@ -96,6 +106,7 @@ void kernel_main(void) {
             int y = str_to_int(input());
             print("\n");
             print(int_to_string(x+y));
+            print("\n");
             print("\n");   
             }
             else if(strequ(opcode,"-")){
@@ -148,13 +159,9 @@ void kernel_main(void) {
             print("\ncalc      : Calculator");
             print("\ndie       : Halts the system");
             print("\n\n");
-
         }
         else if(strequ(cmd,"clear")){
-       
            terminal_initialize();
-           
-            
         }
         else if(strequ(cmd,"die")){
             terminal_initialize();
