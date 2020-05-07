@@ -1,6 +1,5 @@
-#include "../common.c"
+#include "../common.h"
 #include "../all_drivers.h"
-#include "irq.c"
 
 
 

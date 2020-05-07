@@ -85,3 +85,4 @@ char* input();
 char* input_br();
 char input_char();
 uint8_t input_key();
+int _keyboardIRQ;

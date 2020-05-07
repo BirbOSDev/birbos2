@@ -1,4 +1,4 @@
-#include "rtc.c"
+#include "../all_drivers.h"
 unsigned long timer_ticks;
 extern terminal_start;
 

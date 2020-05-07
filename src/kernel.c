@@ -1,13 +1,10 @@
-//#include "all_drivers.h"
+#include "Drivers/multiboot.h"
 #include "common.h"
-#include "Drivers/VGA.c"
-#include "Drivers/keyboard.c"
+#include "all_drivers.h"
 #include "types.h"
-//#include "Drivers/rtc.c"
-//#include "Drivers/irq.h"
-
-void * malloc(int nbytes)
-{
+unsigned int terminal_start;
+//int to string conversion from old code
+void * malloc(int nbytes){
 	char variable[nbytes];
 	return &variable;
 }
@@ -57,20 +54,16 @@ int str_to_int(string ch)
 	}
 	return n;
 }
-
-void kernel_main(void) {
-  //  terminal_initialize();
-  //  terminal_writestring("Hello, world!\n");
+void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     terminal_initialize();
-      print("\n");
-			  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
-		          print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
-		          print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
-		          print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
-        		  print("oo____oo__oo__oo______oo___oo___oo____oo__oo___oo_\n");
-        		  print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
-        		  print("____________________________________________________\n");
-    print("Welcome to BirbOS !\nType in 'help' to view all the commands availaible\n");
+    gdt_install();
+    idt_install();
+    irq_install();
+    __asm__ __volatile__ ("sti");
+    isrs_install();
+    timer_install(1000);
+    sleep(1000);
+    print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
     while(true){
         print("birb>");
         char* cmd = input();
@@ -107,6 +100,7 @@ void kernel_main(void) {
             print("\n");
             print(int_to_string(x+y));
             print("\n");
+            print("\n");   
             }
             else if(strequ(opcode,"-")){
                 print("\nNum1:\n");
@@ -138,22 +132,10 @@ void kernel_main(void) {
             else{
                 print("\nenter a valid operation rerun the program\n");
             }
-            /*char x[16];
-            char y[16];
-            print("Num1:\n");
-            strcpy(input(), &x);
-            print("\nNum2:\n");
-            strcpy(input(), &y);
-            int n1 = atoi(x,10);
-            int n2 = atoi(y,10);
-            print("\n");
-            print(itoa(n1+n2,10));
-            print("\n");
-            */
         }
         else if(strequ(cmd,"help")){
             print("\nclear     : Clears the screen");
-            print("\necho      : Reprint a given text");
+            print("\necho      : Takes input text reprint a given text");
             print("\nabout     : Prints outs detail of the os");
             print("\ncalc      : Calculator");
             print("\ndie       : Halts the system");
@@ -164,8 +146,12 @@ void kernel_main(void) {
         }
         else if(strequ(cmd,"die")){
             terminal_initialize();
-            print("Good Job you halted the cpu go now power it off or restart it");
-            asm("hlt");
+            print_c("Your PC Just halted\nPlease restart to continue using your pc",VGA_COLOR_RED);
+            while(true){
+                //worst implemention i know but asm("hlt") has no mood to work
+                return 0;
+            }
+            
         }
         else if(strequ(cmd, "")){
             print("");
@@ -175,5 +161,6 @@ void kernel_main(void) {
         }
 
     }
-    
+  
+
 }

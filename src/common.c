@@ -282,7 +282,7 @@ void qemudebug(char* s){
     }
 }
 
-/*void sleep(int ms){
+void sleep(int ms){
     timer_wait(ms);
-}*/
+}
 
