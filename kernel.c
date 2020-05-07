@@ -107,7 +107,6 @@ void kernel_main(void) {
             print("\n");
             print(int_to_string(x+y));
             print("\n");
-            print("\n");   
             }
             else if(strequ(opcode,"-")){
                 print("\nNum1:\n");
