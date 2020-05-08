@@ -120,5 +120,14 @@ void fault_handler(struct regs *r)
     print("error: ");
     print(exception_messages[r->int_no]);
     print("\nsystem halted.");
-    for(;;);
+    __asm__ __volatile__ ("cli\nhlt");
+}
+
+void custom_fault_handler(char* error)
+{
+    terminal_initialize();
+    print("error: ");
+    print(error);
+    print("\nsystem halted.");
+    __asm__ __volatile__ ("cli\nhlt");
 }

@@ -62,6 +62,12 @@ void newTaskAt(void (*func)(), int interval, int pos){
 
 }
 
+void removeTask(int pos){
+    tasks[pos] = 0;
+    taskInterval[pos] = 0;
+
+}
+
 
 void timer_wait(int ms)
 {
