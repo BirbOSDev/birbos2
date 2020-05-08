@@ -2,8 +2,6 @@
 #include "all_drivers.h"
 #include <stdarg.h>
 #include <stddef.h>
-<<<<<<< Updated upstream:common.c
-=======
 static unsigned long int next = 69420;
 static unsigned long int random_seed = 42069;
 int rand( void ){
@@ -25,7 +23,6 @@ void srand( unsigned int seed ){
     next = seed;
 }
 
->>>>>>> Stashed changes:src/common.c
 
 int getBit(int8_t byteFlag, int whichBit)
 {
@@ -306,7 +303,7 @@ void qemudebug(char* s){
     }
 }
 
-/*void sleep(int ms){
+void sleep(int ms){
     timer_wait(ms);
-}*/
+}
 

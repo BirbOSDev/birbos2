@@ -189,7 +189,4 @@ char* input_br(){
     inp[c] = '\0';
     return inp;
 }
-<<<<<<< Updated upstream:Drivers/keyboard.c
-=======
 
->>>>>>> Stashed changes:src/Drivers/keyboard.c

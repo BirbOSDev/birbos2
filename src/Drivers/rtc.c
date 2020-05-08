@@ -1,6 +1,5 @@
-#include "../common.c"
+#include "../common.h"
 #include "../all_drivers.h"
-#include "irq.c"
 
 
 
@@ -139,4 +138,11 @@ void rtc_print_formatted_time(){
         print("0");
     }
     print(itoa(second,10));
+}
+
+unsigned int rtcGetUnixTimestamp(){
+    int tyear = year - 1900;
+    return second + minute*60 + hour*3600 + day*86400 +
+    (tyear-70)*31536000 + ((tyear-69)/4)*86400 -
+    ((tyear-1)/100)*86400 + ((tyear+299)/400)*86400;
 }
