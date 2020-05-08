@@ -17,5 +17,5 @@ i686-elf-gcc -c src/Drivers/rtc.c -o debug/rtc.o -std=gnu99 -m32 -ffreestanding 
 i686-elf-ld -T src/linker.ld -o debug/kernel.elf debug/boot.o debug/kernel.o debug/irq.o debug/idt.o debug/timer.o debug/gdt.o debug/isrs.o debug/common.o debug/keyboard.o debug/VGA.o debug/sound.o debug/acpi.o debug/mouse.o debug/rtc.o 
 
 sh makegrub.sh
-qemu-system-i386 BirbOS.iso -serial file:serial.log
+qemu-system-i386 BirbOS.iso -serial file:serial.log -vnc :0
 
