@@ -1,5 +1,0 @@
-*.o
-*.elf
-serial.log
-*.iso
-isodir/boot/grub/grub.cfg
