@@ -2,7 +2,6 @@
 #include "common.h"
 #include "all_drivers.h"
 #include "types.h"
-#include "Drivers/floppy.c"
 unsigned int terminal_start;
 //int to string conversion from old code
 void * malloc(int nbytes){
