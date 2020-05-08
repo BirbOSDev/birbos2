@@ -87,6 +87,14 @@ uint16_t terminal_getentryat(size_t x, size_t y){
 	return data;
 }
 
+void terminal_scroll(){
+    for(int i = 0; i < VGA_HEIGHT; i++){
+        for (int m = 0; m < VGA_WIDTH; m++){
+            terminal_buffer[i * VGA_WIDTH + m] = terminal_buffer[(i + 1) * VGA_WIDTH + m];
+        }
+    }
+}
+
 void terminal_putchar(char c)
 {
 	if (c == '\n') {
@@ -98,13 +106,13 @@ void terminal_putchar(char c)
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT){
-			terminal_row = 0;
-			terminal_initialize();
+			terminal_row = VGA_HEIGHT-1;
+			terminal_scroll();
 		}
 	}
 	if(terminal_row == VGA_HEIGHT){
-        terminal_row = 0;
-        terminal_initialize();
+        terminal_row = VGA_HEIGHT-1;
+        terminal_scroll();
 	}
 	update_cursor(terminal_column, terminal_row);
 }
