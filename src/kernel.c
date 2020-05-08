@@ -162,7 +162,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         else if(strequ(cmd,"die")){
             terminal_initialize();
             char* death[7] = {"string1","string2","string3","string4","string5","string6","string7"};
-            print_c(death[randomInt(7)],VGA_COLOR_RED);
+            print_c(death[randomInt(6)],VGA_COLOR_RED);
             __asm__ __volatile__("cli\nhlt");
             
         }
