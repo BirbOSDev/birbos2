@@ -54,6 +54,12 @@ int str_to_int(string ch)
 	}
 	return n;
 }
+/*
+void taskTest(){
+
+    print("second");
+}
+*/
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     terminal_initialize();
     gdt_install();
@@ -64,6 +70,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     keyboard_install();
     print("\n");
+    //newTask(taskTest, 1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
     while(true){
         print("birb>");

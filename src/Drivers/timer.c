@@ -2,11 +2,44 @@
 unsigned long timer_ticks;
 extern terminal_start;
 
+
+
+
+void (*tasks[32]) (void);
+
+int taskInterval[32];
+
+
 void timer_handler(struct regs *r)
 {
     timer_ticks++;
     maxrand(rtcGetUnixTimestamp(), INT32_MAX);
     read_rtc();
+    for(int i = 0; i<32; i++){
+        if(tasks[i] != 0){
+            if(timer_ticks % taskInterval[i] == 0){
+                tasks[i]();
+            }
+        }
+    }
+}
+
+int newTask(void (*func)(void), int interval){
+    for(int i = 0; i < 32; i++){
+        if(tasks[i] == 0){
+            tasks[i] = func;
+            taskInterval[i] = interval;
+            return i;
+        }
+    }
+    return -1;
+
+}
+
+void newTaskAt(void (*func)(), int interval, int pos){
+    tasks[pos] = func;
+    taskInterval[pos] = interval;
+
 }
 
 
