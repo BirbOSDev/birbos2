@@ -1,62 +1,96 @@
-#include "../common.h"
 #include "../all_drivers.h"
+#include "mouse.h"
 
+uint8_t mouseCycle = 0;
+uint8_t mouseByte[3];
+int16_t mouseX = 256;
+int16_t mouseY = 256;
+bool _mouseIRQ = false;
+bool terminalmousecursor = false;
+bool mouseDown = false;
 
-uint8_t mouse_cycle=0;    
-char mouse_byte[3];    
-char delta_x=0;         
-char delta_y=0;       
+int oldmouseX = 255;
+int oldmouseY = 255;
+int oldentry = 0;
+unsigned int oldscrolls = 0;
 
-int mouse_x=0;         
-int mouse_y=0;    
-     
+void handleMouseDown(uint8_t key) {mouseDown = true;};
+void handleMouseUp(uint8_t key) {mouseDown = false;};
+
+void handleMouse() {
+  _mouseIRQ = true;
+	switch(mouseCycle) {
+	case 0: {
+		mouseByte[0] = mouse_read();
+		if((mouseByte[0] & 0x08) != 0) {
+			mouseCycle++; // Only accept this as the first byte if the "must be 1" bit is set
+		}
+		//mouseCycle++;
+		break;
+	};
+	case 1: {
+		mouseByte[1] = mouse_read();
+		mouseCycle++;
+		break;
+	};
+	case 2: {
+		mouseByte[2] = mouse_read();
+		int8_t mouseXd = mouseByte[1];
+		int8_t mouseYd = mouseByte[2];
+		mouseCycle = 0;
+		mouseX += mouseXd;
+		mouseY -= mouseYd;
+
+		if ((getBit(mouseByte[0], 0) != 0) || (getBit(mouseByte[0], 1) != 0))
+      handleMouseDown(0);
+		else
+			handleMouseUp(0);
+    
+    if (mouseX > VGA_WIDTH - 1)
+      mouseX = VGA_WIDTH - 1;
+    else if (mouseX < 0)
+      mouseX = 0;
+
+    if (mouseY > VGA_HEIGHT - 1)
+      mouseY = VGA_HEIGHT - 1;
+    else if (mouseY < 0)
+      mouseY = 0;
+
+    
+
+    
+    
+		break;
+	  };
+	}
+}
+
+void mouseToggleTerminalCursor(){
+  if(terminalmousecursor){
+    terminal_putrawentryat(oldentry, oldmouseX, oldmouseY);
+    terminalmousecursor = false;
+  } else {
+    terminalmousecursor = true;
+  }
+}
+
+void waitForMouseIRQ(){
+  while(!_mouseIRQ){itoa(1,2);}
+  _mouseIRQ = false;
+}
+
+bool hasMouseIRQFired(){
+  if(_mouseIRQ){
+    _mouseIRQ = false;
+    return true;
+  }
+  return false;
+}
 
 uint8_t mouse_read()
 {
   mouse_wait(0);
   return inportb(0x60);
-}
-
-
-void mouse_handler(struct regs *r) 
-{
-  uint8_t __status = mouse_read();
-    if (!(__status & 0x20))
-        return;
-  switch(mouse_cycle)
-  {
-    case 0:
-      mouse_byte[0]=inportb(0x60);
-      mouse_cycle++;
-      break;
-    case 1:
-      mouse_byte[1]=inportb(0x60);
-      mouse_cycle++;
-      break;
-    case 2:
-      mouse_byte[2]=inportb(0x60);
-      delta_x=mouse_byte[1];
-      delta_y=mouse_byte[2];
-      mouse_cycle=0;
-      break;
-  }
-    mouse_x+=delta_x;
-    mouse_y+=delta_y;
-    
-    if(mouse_x < 1){
-        mouse_x = 1;
-    } else if(mouse_x > 79){
-        mouse_x = 79;
-    }
-    if(mouse_y < 1){
-        mouse_y = 1;
-    } else if(mouse_y > 24){
-        mouse_y = 24;
-    }
-    
-    
-    //update_cursor(mouse_x, mouse_y);
-    
 }
 
 inline void mouse_wait(uint8_t a_type)
@@ -116,5 +150,5 @@ void mouse_install()
   mouse_write(0xF4);
   mouse_read(); 
 
-  irq_install_handler(12, mouse_handler);
+  irq_install_handler(12, handleMouse);
 }

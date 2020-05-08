@@ -1,4 +1,5 @@
 #include "Drivers/multiboot.h"
+#include "Drivers/mouse.h"
 #include "common.h"
 #include "all_drivers.h"
 #include "types.h"
@@ -54,12 +55,8 @@ int str_to_int(string ch)
 	}
 	return n;
 }
-/*
-void taskTest(){
 
-    print("second");
-}
-*/
+
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     terminal_initialize();
     gdt_install();
@@ -68,7 +65,9 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     __asm__ __volatile__ ("sti");
     isrs_install();
     timer_install(1000);
+    mouse_install();
     keyboard_install();
+    
     print("\n");
     //newTask(taskTest, 1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
@@ -86,16 +85,14 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         }
         else if(strequ(cmd,"about")){
         
-              print("\n");
-                rand();
-			  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
-		          print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
-		          print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
-		          print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
-        		  print("oo____oo__oo__oo______oo___oo___oo____oo__oo___oo_\n");
-        		  print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
-        		  print("____________________________________________________\n");
-		          print("\nBirb OS 0.3 (New Drivers Version)\n");
+            print("\n");
+			print("oooooo____oo__________oo__________oooo_____ooooo__\n");
+		    print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
+		    print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
+		    print("oo____oo__oo__oo______oo___oo__oo______oo____oo___\n");
+        	print("oo____oo__oo__oo______oo___oo___oo____oo__oo___oo_\n");
+        	print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
+        	print("____________________________________________________\n");
                   
                
         }
@@ -151,10 +148,14 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ndie       : Halts the system");
             print("\ntime      : Shows the time from RTC");
             print("\nrand      : Returns a random number");
+            print("\ncursor    : Toggles the mouse cursor (note that it can break while scrolling)");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
             terminal_initialize();
+        }
+        else if(strequ(cmd,"cursor")){
+            mouseToggleTerminalCursor();
         }
 	    else if(strequ(cmd,"time")){
             print(itoa(rtcGetUnixTimestamp(), 10));

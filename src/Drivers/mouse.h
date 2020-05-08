@@ -1,13 +1,20 @@
 #pragma once
+#include <stdint.h>
 #include "../common.h"
-#include "../all_drivers.h"
 
 
-uint8_t mouse_cycle=0;    
-char mouse_byte[3];    
-char delta_x=0;         
-char delta_y=0;       
+bool _mouseIRQ;
+bool mouseDown;
+bool terminalmousecursor;
+uint8_t mouseCycle;
+uint8_t mouseByte[3];
+int16_t mouseX;
+int16_t mouseY;
+int oldmouseX ;
+int oldmouseY;
+int oldentry;
+unsigned int oldscrolls;
 
-int mouse_x=0;         
-int mouse_y=0;    
-     
+uint8_t mouse_read();
+void handleMouseDown(uint8_t key);
+void handleMouseUp(uint8_t key);

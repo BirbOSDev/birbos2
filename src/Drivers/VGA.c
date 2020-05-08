@@ -1,8 +1,10 @@
 #include "../all_drivers.h"
-
+#include "mouse.h"
 
 
 uint8_t* screen = (uint8_t*)0xA0000;
+bool terminalScrolling = false;
+unsigned int terminalScrolls = 0;
 
 void putpixel(int x,int y, int color) {
     unsigned where = x*3 + y*2400;
@@ -88,11 +90,17 @@ uint16_t terminal_getentryat(size_t x, size_t y){
 }
 
 void terminal_scroll(){
+	bool wasCursorEnabled = terminalmousecursor;
+	if(terminalmousecursor)mouseToggleTerminalCursor();
+	terminalScrolling = true;
     for(int i = 0; i < VGA_HEIGHT; i++){
         for (int m = 0; m < VGA_WIDTH; m++){
             terminal_buffer[i * VGA_WIDTH + m] = terminal_buffer[(i + 1) * VGA_WIDTH + m];
         }
     }
+	terminalScrolling = false;
+	terminalScrolls++;
+	if(wasCursorEnabled)mouseToggleTerminalCursor();
 }
 
 void terminal_putchar(char c)
@@ -117,6 +125,13 @@ void terminal_putchar(char c)
 	update_cursor(terminal_column, terminal_row);
 }
 
+void terminal_putcharat(char c, int tx, int ty)
+{
+	
+    terminal_putentryat(c, terminal_color, tx, ty);
+    
+}
+
 void terminal_putcharnoex(char c)
 {
 
@@ -125,12 +140,12 @@ void terminal_putcharnoex(char c)
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT){
 			terminal_row = 0;
-			terminal_initialize();
+			terminal_scroll();
 		}
 	}
 	if(terminal_row == VGA_HEIGHT){
         terminal_row = 0;
-        terminal_initialize();
+        terminal_scroll();
 	}
 	update_cursor(terminal_column, terminal_row);
 }

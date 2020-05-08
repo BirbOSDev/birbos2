@@ -1,6 +1,8 @@
 #include "../all_drivers.h"
+#include "mouse.h"
 unsigned long timer_ticks;
 extern terminal_start;
+
 
 
 
@@ -22,6 +24,24 @@ void timer_handler(struct regs *r)
             }
         }
     }
+
+    if(terminalmousecursor && !terminalScrolling){
+      if(mouseX != oldmouseX || mouseY != oldmouseY || terminalScrolls != oldscrolls){
+        terminal_putrawentryat(oldentry, oldmouseX, oldmouseY - (terminalScrolls - oldscrolls));
+        oldmouseX = mouseX; 
+        oldmouseY = mouseY; 
+        oldscrolls = terminalScrolls;
+        oldentry = terminal_getentryat(mouseX, mouseY);
+        
+      }
+      if(mouseDown)
+          terminal_putentryat(219, 0x07, mouseX, mouseY);
+        else
+          terminal_putentryat(219, 0x08, mouseX, mouseY);
+    }
+    
+
+
 }
 
 int newTask(void (*func)(void), int interval){

@@ -30,6 +30,8 @@ uint8_t* screen;
 size_t terminal_row;
 size_t terminal_column;
 uint16_t* terminal_buffer;
+bool terminalScrolling;
+unsigned int terminalScrolls;
 
 void update_cursor(uint16_t x, uint16_t y);
 uint8_t vga_entry_color(uint8_t fg, uint8_t bg);
