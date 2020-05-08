@@ -76,7 +76,7 @@ enum KEYCODE {
 	ENTER_RELEASED = 0x9C,
 
 };
-char* inp;
+char inp[1024];
 void outportb(uint16_t port, uint8_t value);
 uint8_t inportb(uint16_t port);
 void keyboard_send_key(uint8_t b);

@@ -5,6 +5,10 @@ extern terminal_start;
 void timer_handler(struct regs *r)
 {
     timer_ticks++;
+<<<<<<< Updated upstream:Drivers/timer.c
+=======
+    maxrand(rtcGetUnixTimestamp(), INT32_MAX);
+>>>>>>> Stashed changes:src/Drivers/timer.c
     read_rtc();
 }
 

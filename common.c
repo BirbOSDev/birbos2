@@ -2,6 +2,30 @@
 #include "all_drivers.h"
 #include <stdarg.h>
 #include <stddef.h>
+<<<<<<< Updated upstream:common.c
+=======
+static unsigned long int next = 69420;
+static unsigned long int random_seed = 42069;
+int rand( void ){
+    next = next * 1103515245 + 12345;
+    return (unsigned int)(next / INT16_MAX * 2) % INT16_MAX;
+}
+
+int maxrand(int seed,int max)
+{
+	random_seed = random_seed+seed * 1103515245 +12345;
+	return (unsigned int)(random_seed / 65536) % (max+1); 
+}
+
+unsigned int randomInt(unsigned int max){
+    return maxrand(rtcGetUnixTimestamp(), max);
+}
+
+void srand( unsigned int seed ){
+    next = seed;
+}
+
+>>>>>>> Stashed changes:src/common.c
 
 int getBit(int8_t byteFlag, int whichBit)
 {
