@@ -1,2 +1,2 @@
-New Birb OS
-written in c and assembly and bootable
+New BirbOS
+written in c and assembly and this time it's an actual os
