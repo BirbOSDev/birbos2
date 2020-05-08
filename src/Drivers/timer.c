@@ -5,6 +5,7 @@ extern terminal_start;
 void timer_handler(struct regs *r)
 {
     timer_ticks++;
+    rand();
     read_rtc();
 }
 

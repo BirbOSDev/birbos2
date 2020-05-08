@@ -2,6 +2,7 @@
 #include "common.h"
 #include "all_drivers.h"
 #include "types.h"
+#include "Drivers/floppy.c"
 unsigned int terminal_start;
 //int to string conversion from old code
 void * malloc(int nbytes){
@@ -62,6 +63,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     __asm__ __volatile__ ("sti");
     isrs_install();
     timer_install(1000);
+    hwd_floppy_t fd = hwdetect_floppy_disks();
+    print(fd.master_desc);
     print("\n");
     sleep(1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
@@ -80,6 +83,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         else if(strequ(cmd,"about")){
         
               print("\n");
+                rand();
 			  print("oooooo____oo__________oo__________oooo_____ooooo__\n");
 		          print("oo____oo______oo_ooo__oooooo____oo____oo__oo___oo_\n");
 		          print("oooooooo__oo__ooo___o_oo___oo__oo______oo__oo_____\n");
@@ -88,7 +92,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         		  print("ooooooo__oooo_oo______oooooo______oooo_____ooooo__\n");
         		  print("____________________________________________________\n");
 		          print("\nBirb OS 0.3 (New Drivers Version)\n");
-
+                  print(int_to_string(rand()));
+               
         }
         else if(strequ(cmd,"calc")){
             print("Enter + to add,- to subtract,* to multiply,/ to divide\n");
@@ -147,16 +152,15 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         }
         else if(strequ(cmd,"die")){
             terminal_initialize();
-            print_c("Your PC Just halted\nPlease restart to continue using your pc",VGA_COLOR_RED);
+            print_c("\nYour PC Just halted\nPlease restart to continue using your pc",VGA_COLOR_RED);
             //asm("hlt"); what it was new implemetaion starts
-            _asm{
-                hlt
-            }//new implementation ends
+            //asm("hlt");
+            //new implementation ends
             //old halt
-            //while(true){
+            while(true){
             //    //worst implemention i know but asm("hlt") has no mood to work
-               // return 0;
-            //}
+             return 0;
+            }
             
         }
         else if(strequ(cmd, "")){
