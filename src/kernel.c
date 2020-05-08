@@ -2,6 +2,7 @@
 #include "common.h"
 #include "all_drivers.h"
 #include "types.h"
+#include "Drivers/floppy.c"
 unsigned int terminal_start;
 //int to string conversion from old code
 void * malloc(int nbytes){
@@ -62,6 +63,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     __asm__ __volatile__ ("sti");
     isrs_install();
     timer_install(1000);
+    print("\n");
     sleep(1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
     while(true){
@@ -147,10 +149,15 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         else if(strequ(cmd,"die")){
             terminal_initialize();
             print_c("Your PC Just halted\nPlease restart to continue using your pc",VGA_COLOR_RED);
-            while(true){
-                //worst implemention i know but asm("hlt") has no mood to work
-                return 0;
-            }
+            //asm("hlt"); what it was new implemetaion starts
+            _asm{
+                hlt
+            }//new implementation ends
+            //old halt
+            //while(true){
+            //    //worst implemention i know but asm("hlt") has no mood to work
+               // return 0;
+            //}
             
         }
         else if(strequ(cmd, "")){
