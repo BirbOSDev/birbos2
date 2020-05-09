@@ -4,4 +4,4 @@ qemu
 
 
 
-bash comp.sh
+after installing above run bash comp.sh
