@@ -7,4 +7,5 @@
 #include "Drivers/idt.h"
 #include "Drivers/timer.h"
 #include "Drivers/rtc.h"
-//#include "Drivers/mouse.h"
+#include "Drivers/mouse.h"
+#include "Drivers/tui.h"

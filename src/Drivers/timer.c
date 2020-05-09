@@ -5,20 +5,20 @@ extern terminal_start;
 
 
 
-void (*tasks[64]) (int taskno);
-int timers[64];
+void (*tasks[64]) (int taskno) = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int timers[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-int taskInterval[64];
-int taskMs[64];
-int taskRuns[64];
-unsigned int timersMsPassed[64];
-char _mc = 30;
+int taskInterval[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int taskMs[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int taskRuns[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+unsigned int timersMsPassed[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void timer_handler(struct regs *r)
 {
     timer_ticks++;
+    if(timer_ticks % 1000 == 0)
+        read_rtc();
     maxrand(rtcGetUnixTimestamp(), INT32_MAX);
-    read_rtc();
     for(int i = 0; i<64; i++){
         if(tasks[i] != 0){
             if(taskRuns[i] == 0){
@@ -42,36 +42,7 @@ void timer_handler(struct regs *r)
         }
     }
 
-    if(terminalmousecursor && !terminalScrolling){
-      if(mouseX != oldmouseX || mouseY != oldmouseY || terminalScrolls != oldscrolls){
-        terminal_putrawentryat(oldentry, oldmouseX, oldmouseY - (terminalScrolls - oldscrolls));
-        oldmouseX = mouseX; 
-        oldmouseY = mouseY; 
-        oldscrolls = terminalScrolls;
-        oldentry = terminal_getentryat(mouseX, mouseY);
-        
-      }
-      uint16_t num = terminal_getentryat(mouseX, mouseY);
-      num = (num >> 8)&0xFF;
-      char nibble = (char) ((num >> 4) & 0x0F);
-      //bgcolor = (bgcolor & 0xF0) | (bgcolor & 0xF);
-
-      
-
-      lcolor = setUpperNibble(lcolor, nibble);
-      rcolor = setUpperNibble(rcolor, nibble);
-      mcolor = setUpperNibble(mcolor, nibble);
-      dcolor = setUpperNibble(dcolor, nibble);
-      if(lmouseDown){
-          terminal_putentryat(_mc, lcolor, mouseX, mouseY);
-      }else if (rmouseDown){
-          terminal_putentryat(_mc, rcolor, mouseX, mouseY);
-      } else if (mmouseDown) {
-          terminal_putentryat(_mc, mcolor, mouseX, mouseY);
-      } else {
-          terminal_putentryat(_mc, dcolor, mouseX, mouseY);
-      }
-    }
+    
     
 
 
@@ -113,8 +84,10 @@ void removeTask(int pos){
 }
 
 unsigned int stopTimer(int pos){
-    if(pos > 63 || pos > 0)
-        return -1;
+    if(pos > 63 || pos < 0)
+        return -2;
+    if(timers[pos] == 0)
+        return -3;
     timers[pos] = 0;
     unsigned int _t = timersMsPassed[pos];
     timersMsPassed[pos] = 0;

@@ -3,11 +3,11 @@
 
 uint8_t mouseCycle = 0;
 uint8_t mouseByte[4];
-uint8_t sensitivity = 4;
-int16_t highmouseX = 256 * 4;
-int16_t highmouseY = 256 * 4;
-int16_t mouseX = 256;
-int16_t mouseY = 256;
+uint8_t sensitivity = 6;
+int16_t highmouseX = 79 * 6;
+int16_t highmouseY = 0;
+int16_t mouseX = 79;
+int16_t mouseY = 0;
 bool _mouseIRQ = false;
 bool terminalmousecursor = false;
 bool lmouseDown = false;
@@ -21,8 +21,8 @@ unsigned char mcolor = 0x02;
 unsigned char dcolor = 0x07;
 
 
-int oldmouseX = 255;
-int oldmouseY = 255;
+int oldmouseX = 0;
+int oldmouseY = 0;
 int oldentry = 0;
 unsigned int oldscrolls = 0;
 
@@ -98,13 +98,13 @@ void handleMouse() {
     else if (highmouseX < 0)
       highmouseX = 0;
 
-    if (highmouseY > (VGA_HEIGHT/* - 1*/) * sensitivity)
-      highmouseY = (VGA_HEIGHT/* - 1*/) * sensitivity;
+    if (highmouseY > (VGA_HEIGHT/* - 1*/) * (sensitivity+1))
+      highmouseY = (VGA_HEIGHT/* - 1*/) * (sensitivity+1);
     else if (highmouseY < 0)
       highmouseY = 0;
 
       mouseX = highmouseX / sensitivity;
-      mouseY = highmouseY / sensitivity;
+      mouseY = highmouseY / (sensitivity+1);
   
     
 

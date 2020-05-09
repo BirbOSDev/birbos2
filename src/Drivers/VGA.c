@@ -64,7 +64,7 @@ void terminal_initialize(void)
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
-			terminal_buffer[index] = vga_entry(' ', terminal_color);
+			terminal_buffer_layer[index] = vga_entry(' ', terminal_color);
 		}
 	}
 }
@@ -77,10 +77,22 @@ void terminal_setcolor(uint8_t color)
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 {
 	const size_t index = y * VGA_WIDTH + x;
+	terminal_buffer_layer[index] = vga_entry(c, color);
+}
+
+void _terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
+{
+	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
 void terminal_putrawentryat(uint16_t entry, size_t x, size_t y)
+{
+	const size_t index = y * VGA_WIDTH + x;
+	terminal_buffer_layer[index] = entry;
+}
+
+void _terminal_putrawentryat(uint16_t entry, size_t x, size_t y)
 {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = entry;
@@ -88,81 +100,31 @@ void terminal_putrawentryat(uint16_t entry, size_t x, size_t y)
 
 uint16_t terminal_getentryat(size_t x, size_t y){
 	const size_t index = y * VGA_WIDTH + x;
+	uint16_t data = terminal_buffer_layer[index];
+	return data;
+}
+
+uint16_t _terminal_getentryat(size_t x, size_t y){
+	const size_t index = y * VGA_WIDTH + x;
 	uint16_t data = terminal_buffer[index];
 	return data;
 }
 
 void terminal_scroll(){
-	bool wasCursorEnabled = terminalmousecursor;
-	if(terminalmousecursor)mouseToggleTerminalCursor();
 	terminalScrolling = true;
-	barEnabled = false;
 	char* data = "                                                                                ";
     for (size_t i = 0; i < strlen(data); i++){
         terminal_putentryat(data[i], 0x00, i, 24);
     }
     for(int i = 0; i < VGA_HEIGHT; i++){
         for (int m = 0; m < VGA_WIDTH; m++){
-            terminal_buffer[i * VGA_WIDTH + m] = terminal_buffer[(i + 1) * VGA_WIDTH + m];
+            terminal_buffer_layer[i * VGA_WIDTH + m] = terminal_buffer_layer[(i + 1) * VGA_WIDTH + m];
         }
     }
-	barEnabled = true;
 	terminalScrolling = false;
 	terminalScrolls++;
-	if(wasCursorEnabled)mouseToggleTerminalCursor();
 }
 
-
-void barTask(){
-	char data[80] = "";
-
-	switch(weekday){
-          case 1: strcat(data, "Sunday "); break;
-          case 2: strcat(data, "Monday "); break;
-          case 3: strcat(data, "Tuesday "); break;
-          case 4: strcat(data, "Wednesday "); break;
-          case 5: strcat(data, "Thursday "); break;
-          case 6: strcat(data, "Friday "); break;
-          case 7: strcat(data, "Saturday "); break;
-          default: break;
-
-
-    }
-    strcat(data, itoa(day,10));
-    strcat(data, "/");
-    strcat(data, itoa(month,10));
-    strcat(data, "/");
-    strcat(data, itoa(year,10));
-    strcat(data, " ");
-    if(hour<10){
-        strcat(data, "0");
-    }
-    strcat(data, itoa(hour,10));
-    strcat(data, ":");
-    if(minute<10){
-        strcat(data, "0");
-    }
-    strcat(data, itoa(minute,10));
-    strcat(data, ":");
-    if(second<10){
-        strcat(data, "0");
-    }
-    strcat(data, itoa(second,10));
-
-	int len = strlen(data);
-	for(int i = len; i < 80 - 6; i++){
-		data[i] = ' ';
-	}
-	strcat(data, "birbOS");
-
-	
-	if(!barEnabled)
-		return;
-    for (size_t i = 0; i < strlen(data); i++){
-        terminal_putentryat(data[i], 0x87, i, 24);
-    }
-	
-}
 
 
 

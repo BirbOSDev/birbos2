@@ -126,6 +126,7 @@ void fault_handler(struct regs *r)
         print(itoa(inportb(0x61), 2));
     }
     print("\nsystem halted.");
+    memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     __asm__ __volatile__ ("cli\nhlt");
 }
 

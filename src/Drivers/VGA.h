@@ -33,6 +33,7 @@ uint16_t* terminal_buffer;
 bool terminalScrolling;
 unsigned int terminalScrolls;
 bool barEnabled;
+uint16_t terminal_buffer_layer[2048*2];
 
 void barTask();
 void update_cursor(uint16_t x, uint16_t y);

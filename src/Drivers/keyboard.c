@@ -6,7 +6,7 @@ _keyboardirq = 0;
 
 
 void keyboard_send_key(uint8_t b){
-    outportb(0x64, b);
+    outportb(0x60, b);
 }
 
 uint8_t keyboard_read_key()

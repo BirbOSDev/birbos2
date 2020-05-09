@@ -67,25 +67,31 @@ void loadingTask(){
 
 
 
-
-
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     int _boot_timer_ = startTimer();
     terminal_initialize();
-    int _task = newTask(loadingTask, 25, -1);
     gdt_install();
     idt_install();
     irq_install();
     __asm__ __volatile__ ("sti");
+    keyboard_install();
     isrs_install();
     mouse_install();
-    keyboard_install();
     outportb(0x70, inportb(0x70) & 0x7F);
-    sleep(50); // wait for everything to initialize
-    removeTask(_task);
     int _time_boot_ = stopTimer(_boot_timer_);
-    newTask(barTask, 5);
+    //newTask(barTask, 5);
+    int __ret = -1;
+    while(__ret == -1)
+        __ret = newTask(terminalRenderTask, 5);
+    mouseToggleTerminalCursor();
+    keyboard_send_key(0xe1);
+    print("render failed. please restart your computer.");
+    memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
+    terminal_initialize();
+    read_rtc();
+    initAcpi();
+    
    
     //print(itoa(mbi->mem_upper, 10));
 
@@ -299,6 +305,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             terminal_initialize();
             char* death[7] = {"string1","string2","string3","string4","string5","string6","string7"};
             print_c(death[randomInt(6)],VGA_COLOR_RED);
+            memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
             __asm__ __volatile__("cli\nhlt");
             
         }
