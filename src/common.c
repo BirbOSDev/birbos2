@@ -32,6 +32,33 @@ int getBit(int8_t byteFlag, int whichBit)
         return 0;
 }
 
+char* cpuidstring(int in, char* buf){
+    int e = 0;
+    asm("mov eax, %0\n"
+                "cpuid"::"r" (in) :);
+    register uint32_t ebx1 asm("ebx");
+    register uint32_t edx1 asm("edx");
+    register uint32_t ecx1 asm("ecx");
+    uint32_t ebx = ebx1;
+    uint32_t edx = edx1;
+    uint32_t ecx = ecx1;
+    uint32_t byt;
+    for(int j = 0; j<4; j++){
+        byt = ((unsigned char *)(&ebx))[j];
+        buf[e++] = byt;
+    }
+    for(int j = 0; j<4; j++){
+        byt = ((unsigned char *)(&edx))[j];
+        buf[e++] = byt;
+    }
+    for(int j = 0; j<4; j++){
+        byt = ((unsigned char *)(&ecx))[j];
+        buf[e++] = byt;
+    }
+    buf[12] = '\0';
+    return buf;
+
+}
 
 void outportb(uint16_t port, uint8_t value)
 {

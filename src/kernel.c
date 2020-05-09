@@ -56,17 +56,33 @@ int str_to_int(string ch)
 	return n;
 }
 
+void loadingTask(){
+    print("| loading"); for(int i = 0; i < 65535*255; i++) {} terminal_initialize();
+    print("/ loading"); for(int i = 0; i < 65535*255; i++) {} terminal_initialize();
+    print("- loading"); for(int i = 0; i < 65535*255; i++) {} terminal_initialize();
+    print("\\ loading");for(int i = 0; i < 65535*255; i++) {} terminal_initialize();
+    print("| loading"); for(int i = 0; i < 65535*255; i++) {} terminal_initialize();
+}
+
 
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
+    timer_install(1000);
     terminal_initialize();
+    int _task = newTask(loadingTask, 25);
     gdt_install();
     idt_install();
     irq_install();
     __asm__ __volatile__ ("sti");
     isrs_install();
-    timer_install(1000);
     mouse_install();
     keyboard_install();
+    outportb(0x70, inportb(0x70) & 0x7F);
+    sleep(150); // wait for everything to initialize
+    removeTask(_task);
+    
+    //print(itoa(mbi->mem_upper, 10));
+
+
     
     print("\n");
     //newTask(taskTest, 1000);
@@ -149,13 +165,79 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ntime      : Shows the time from RTC");
             print("\nrand      : Returns a random number");
             print("\ncursor    : Toggles the mouse cursor (note that it can break while scrolling)");
+            print("\ncpuvendor : Get the 12 character vendor string from CPUID");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
             terminal_initialize();
         }
+        else if(strequ(cmd, "memory")){
+            if((mbi->flags >> 6) & 1){
+                print(itoa(mbi->mem_upper, 10));
+                
+            } else {
+                __asm__ __volatile__ (
+
+                    "probeRAM:\n" 
+                "    push eax\n"
+                "    push ebx\n"
+                "    push edx\n"
+                "    push ebp\n" 
+                "    mov esi, 0x10000\n" 
+                "    mov edx, 2147483647\n" 
+                "    mov ebp,esi\n" 
+                "    add esi,0x00000FFF\n"
+                "    and esi, 0x00000FFF\n"
+                "    push esi\n"
+                "    mov eax, esi\n"
+                "    sub eax, ebp\n"
+                "    xor ecx,ecx\n"
+                "    sub edx,eax\n"
+                "    jc .done\n"
+                "    or esi,0x00000FFC\n"
+                "    shr edx,12\n"
+                "    je .done\n"
+                " \n"
+                ".testAddress:\n"
+                "    mov eax,[esi]\n"
+                "    mov ebx,eax\n"
+                "    not eax\n"
+                "    mov [esi],eax\n"
+                "    mov [0x2000],ebx\n"
+                "    wbinvd\n"
+                "    mov ebp,[esi]\n"
+                "    mov [esi],ebx\n"
+                "    cmp ebp,eax\n"
+                "    jne .done\n"
+                " \n" 
+                " \n"
+                "    add ecx,0x00001000\n"
+                "    add esi,0x00001000\n"
+                "    dec edx\n" 
+                "    jne .testAddress\n"
+                " \n"
+                " \n"
+                ".done:\n"
+                "    pop esi\n"
+                "    pop ebp\n"
+                "    pop edx\n"
+                "    pop ebx\n"
+                "    pop eax");
+                register uint32_t r asm("ecx");
+                print(itoa(r/1024, 10));
+            }
+            print("KiB");
+            print("\n");
+            
+        }
         else if(strequ(cmd,"cursor")){
             mouseToggleTerminalCursor();
+        }
+        else if(strequ(cmd,"cpuvendor")){
+            char str[13];
+            print(cpuidstring(0, str));
+            print("\n");
+
         }
 	    else if(strequ(cmd,"time")){
             print(itoa(rtcGetUnixTimestamp(), 10));
