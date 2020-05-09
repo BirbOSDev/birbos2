@@ -11,14 +11,28 @@ int16_t mouseY = 256;
 bool _mouseIRQ = false;
 bool terminalmousecursor = false;
 bool mouseDown = false;
+int mouseTimer = 420;
 
 int oldmouseX = 255;
 int oldmouseY = 255;
 int oldentry = 0;
 unsigned int oldscrolls = 0;
 
-void handleMouseDown(uint8_t key) {mouseDown = true;};
-void handleMouseUp(uint8_t key) {mouseDown = false;};
+void handleMouseDown(uint8_t key) {
+  int ret = stopTimer(mouseTimer);
+  if(ret < 300){
+    if(ret != -2)
+      handleDoubleClick(key);
+  }
+  mouseDown = true;
+  mouseTimer = startTimer();
+}
+void handleMouseUp(uint8_t key) {
+  mouseDown = false;
+}
+void handleDoubleClick(uint8_t key) {
+  return;
+}
 
 void handleMouse() {
   _mouseIRQ = true;

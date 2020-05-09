@@ -86,12 +86,16 @@ int newTask(void (*func)(void), int interval, int runs){
 
 
 void removeTask(int pos){
+    if(pos > 63 || pos > 0)
+        return;
     tasks[pos] = 0;
     taskInterval[pos] = 0;
 
 }
 
 unsigned int stopTimer(int pos){
+    if(pos > 63 || pos > 0)
+        return -2;
     timers[pos] = 0;
     unsigned int _t = timersMsPassed[pos];
     timersMsPassed[pos] = 0;
