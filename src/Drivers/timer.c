@@ -5,14 +5,14 @@ extern terminal_start;
 
 
 
-void (*tasks[64]) (void);
+void (*tasks[64]) (int taskno);
 int timers[64];
 
 int taskInterval[64];
 int taskMs[64];
 int taskRuns[64];
 unsigned int timersMsPassed[64];
-
+char _mc = 30;
 
 void timer_handler(struct regs *r)
 {
@@ -28,7 +28,7 @@ void timer_handler(struct regs *r)
             taskMs[i]++;
             if(taskMs[i] == taskInterval[i]){
                 taskMs[i] = 0;
-                tasks[i]();
+                tasks[i](i);
                 if(taskRuns[i] != -1)
                     taskRuns[i]--;
             }
@@ -51,10 +51,15 @@ void timer_handler(struct regs *r)
         oldentry = terminal_getentryat(mouseX, mouseY);
         
       }
-      if(mouseDown)
-          terminal_putentryat(219, 0x07, mouseX, mouseY);
-        else
-          terminal_putentryat(219, 0x08, mouseX, mouseY);
+      if(lmouseDown){
+          terminal_putentryat(_mc, 0x01, mouseX, mouseY);
+      }else if (rmouseDown){
+          terminal_putentryat(_mc, 0x04, mouseX, mouseY);
+      } else if (mmouseDown) {
+          terminal_putentryat(_mc, 0x02, mouseX, mouseY);
+      } else {
+          terminal_putentryat(_mc, 0x08, mouseX, mouseY);
+      }
     }
     
 
@@ -75,6 +80,9 @@ int newTask(void (*func)(void), int interval, int runs){
     for(int i = 0; i < 64; i++){
         if(tasks[i] == 0){
             tasks[i] = func;
+            if(runs == NULL){
+                runs = -1;
+            }
             taskRuns[i] = runs;
             taskInterval[i] = interval;
             return i;
@@ -95,11 +103,11 @@ void removeTask(int pos){
 
 unsigned int stopTimer(int pos){
     if(pos > 63 || pos > 0)
-        return -2;
+        return -1;
     timers[pos] = 0;
     unsigned int _t = timersMsPassed[pos];
     timersMsPassed[pos] = 0;
-    return _t - 1;
+    return _t;
 
 }
 

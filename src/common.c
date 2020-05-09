@@ -312,6 +312,7 @@ char ktocSHIFT(uint8_t key){
     }
     return c;
 }
+
 char* strcat(char* dest, const char *src)
 {
     size_t i,j;

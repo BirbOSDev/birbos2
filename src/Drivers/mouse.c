@@ -2,7 +2,7 @@
 #include "mouse.h"
 
 uint8_t mouseCycle = 0;
-uint8_t mouseByte[3];
+uint8_t mouseByte[4];
 uint8_t sensitivity = 4;
 int16_t highmouseX = 256 * 4;
 int16_t highmouseY = 256 * 4;
@@ -10,7 +10,9 @@ int16_t mouseX = 256;
 int16_t mouseY = 256;
 bool _mouseIRQ = false;
 bool terminalmousecursor = false;
-bool mouseDown = false;
+bool lmouseDown = false;
+bool rmouseDown = false;
+bool mmouseDown = false;
 int mouseTimer = 420;
 
 int oldmouseX = 255;
@@ -19,16 +21,28 @@ int oldentry = 0;
 unsigned int oldscrolls = 0;
 
 void handleMouseDown(uint8_t key) {
-  int ret = stopTimer(mouseTimer);
-  if(ret < 300){
-    if(ret != -2)
-      handleDoubleClick(key);
+  if(key == 0){
+    int ret = stopTimer(mouseTimer);
+    if(ret < 300){
+      if(ret != -1)
+        handleDoubleClick(key);
+    }
+    lmouseDown = true;
+    mouseTimer = startTimer();
+  } else if(key == 1) {
+    rmouseDown = true;
+  } else if(key == 2){
+    mmouseDown = true;
   }
-  mouseDown = true;
-  mouseTimer = startTimer();
 }
 void handleMouseUp(uint8_t key) {
-  mouseDown = false;
+  if(key == 0){
+    lmouseDown = false;
+  } else if(key == 1) {
+    rmouseDown = false;
+  } else if(key == 2){
+    mmouseDown = false;
+  }
 }
 void handleDoubleClick(uint8_t key) {
   return;
@@ -58,10 +72,20 @@ void handleMouse() {
 		highmouseX += mouseXd;
 		highmouseY -= mouseYd;
 
-		if ((getBit(mouseByte[0], 0) != 0) || (getBit(mouseByte[0], 1) != 0))
+		if ((getBit(mouseByte[0], 1) != 0))
       handleMouseDown(0);
 		else
 			handleMouseUp(0);
+
+      if ((getBit(mouseByte[0], 2) != 0))
+      handleMouseDown(1);
+		else
+			handleMouseUp(1);
+
+      if ((getBit(mouseByte[0], 3) != 0))
+      handleMouseDown(2);
+		else
+			handleMouseUp(2);
     
     if (highmouseX > (VGA_WIDTH - 1) * sensitivity)
       highmouseX = (VGA_WIDTH - 1) * sensitivity;
@@ -85,11 +109,26 @@ void handleMouse() {
     
 		break;
 	  };
+  case 3: {
+    mouseCycle = 0;
+    mouseByte[4] = mouse_read();
+    break;
+   }
 	}
 }
 
 void setMouseSensitivity(int s){
-  sensitivity = s;
+  
+  if(s < 1){
+    sensitivity = 1;
+  } else
+  if(s > 255){
+    sensitivity = 255;
+  } else {
+    sensitivity = s;
+  }
+
+  
 }
 
 void mouseToggleTerminalCursor(){
@@ -161,7 +200,7 @@ void mouse_install()
   mouse_wait(1);
   outportb(0x64, 0xA8);
  
-  mouse_wait(1);
+  //mouse_wait(1);
   outportb(0x64, 0x20);
   mouse_wait(0);
   _status=(inportb(0x60) | 2);
@@ -176,6 +215,13 @@ void mouse_install()
  
   mouse_write(0xF4);
   mouse_read(); 
+
+  mouse_write(0xF3);
+  outportb(0x60, 200);
+  mouse_read(); 
+
+  mouse_write(0xE7);
+  mouse_read();
 
   irq_install_handler(12, handleMouse);
 }

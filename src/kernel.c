@@ -65,6 +65,8 @@ void loadingTask(){
 }
 
 
+
+
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     int _boot_timer_ = startTimer();
@@ -78,11 +80,13 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     mouse_install();
     keyboard_install();
     outportb(0x70, inportb(0x70) & 0x7F);
-    sleep(150); // wait for everything to initialize
+    sleep(50); // wait for everything to initialize
     removeTask(_task);
     int _time_boot_ = stopTimer(_boot_timer_);
     
     //print(itoa(mbi->mem_upper, 10));
+
+    //while(1) print(itoa(keyboard_read_key(), 16));
     
 
     print("boot took ");

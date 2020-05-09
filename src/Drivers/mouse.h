@@ -4,10 +4,12 @@
 
 
 bool _mouseIRQ;
-bool mouseDown;
+bool lmouseDown;
+bool rmouseDown;
+bool mmouseDown;
 bool terminalmousecursor;
 uint8_t mouseCycle;
-uint8_t mouseByte[3];
+uint8_t mouseByte[4];
 int16_t mouseX;
 int16_t mouseY;
 int oldmouseX ;

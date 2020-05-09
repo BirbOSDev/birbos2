@@ -1,5 +1,6 @@
 #include "../all_drivers.h"
 #include "mouse.h"
+#define BIT_SET(a,b) ((a) |= (1ULL<<(b)))
 
 
 uint8_t* screen = (uint8_t*)0xA0000;
@@ -101,6 +102,10 @@ void terminal_scroll(){
 	terminalScrolling = false;
 	terminalScrolls++;
 	if(wasCursorEnabled)mouseToggleTerminalCursor();
+}
+
+void fillBG(uint8_t color){
+
 }
 
 void terminal_putchar(char c)
