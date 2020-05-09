@@ -1,1 +1,1 @@
-good
+bash comp.sh
