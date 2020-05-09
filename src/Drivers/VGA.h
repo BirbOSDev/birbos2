@@ -24,15 +24,17 @@
 #define VGA_COLOR_WHITE 15
 
 #define VGA_WIDTH 80
-#define VGA_HEIGHT 25
+#define VGA_HEIGHT 24
 
 uint8_t* screen;
-size_t terminal_row;
-size_t terminal_column;
+unsigned int terminal_row;
+unsigned int terminal_column;
 uint16_t* terminal_buffer;
 bool terminalScrolling;
 unsigned int terminalScrolls;
+bool barEnabled;
 
+void barTask();
 void update_cursor(uint16_t x, uint16_t y);
 uint8_t vga_entry_color(uint8_t fg, uint8_t bg);
 uint16_t vga_entry(unsigned char uc, uint8_t color);

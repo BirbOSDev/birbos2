@@ -140,6 +140,16 @@ void rtc_print_formatted_time(){
     print(itoa(second,10));
 }
 
+void rtc_get_unformatted_time(int* buf){
+    buf[0] = weekday;
+    buf[1] = day;
+    buf[2] = month;
+    buf[3] = year;
+    buf[4] = hour;
+    buf[5] = minute;
+    buf[6] = second;
+}
+
 unsigned int rtcGetUnixTimestamp(){
     int tyear = year - 1900;
     return second + minute*60 + hour*3600 + day*86400 +

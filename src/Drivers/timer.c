@@ -51,14 +51,25 @@ void timer_handler(struct regs *r)
         oldentry = terminal_getentryat(mouseX, mouseY);
         
       }
+      uint16_t num = terminal_getentryat(mouseX, mouseY);
+      num = (num >> 8)&0xFF;
+      char nibble = (char) ((num >> 4) & 0x0F);
+      //bgcolor = (bgcolor & 0xF0) | (bgcolor & 0xF);
+
+      
+
+      lcolor = setUpperNibble(lcolor, nibble);
+      rcolor = setUpperNibble(rcolor, nibble);
+      mcolor = setUpperNibble(mcolor, nibble);
+      dcolor = setUpperNibble(dcolor, nibble);
       if(lmouseDown){
-          terminal_putentryat(_mc, 0x01, mouseX, mouseY);
+          terminal_putentryat(_mc, lcolor, mouseX, mouseY);
       }else if (rmouseDown){
-          terminal_putentryat(_mc, 0x04, mouseX, mouseY);
+          terminal_putentryat(_mc, rcolor, mouseX, mouseY);
       } else if (mmouseDown) {
-          terminal_putentryat(_mc, 0x02, mouseX, mouseY);
+          terminal_putentryat(_mc, mcolor, mouseX, mouseY);
       } else {
-          terminal_putentryat(_mc, 0x08, mouseX, mouseY);
+          terminal_putentryat(_mc, dcolor, mouseX, mouseY);
       }
     }
     

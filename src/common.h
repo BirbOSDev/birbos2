@@ -13,6 +13,8 @@ struct regs
 };
 int rand(void);
 void beep();
+char setLowerNibble(char orig, char nibble);
+char setUpperNibble(char orig, char nibble);
 int getBit(int8_t byteFlag, int whichBit);
 void outportb(uint16_t port, uint8_t value);
 uint8_t inportb(uint16_t port);

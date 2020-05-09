@@ -67,6 +67,8 @@ void loadingTask(){
 
 
 
+
+
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     int _boot_timer_ = startTimer();
@@ -83,7 +85,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     sleep(50); // wait for everything to initialize
     removeTask(_task);
     int _time_boot_ = stopTimer(_boot_timer_);
-    
+    newTask(barTask, 5);
+   
     //print(itoa(mbi->mem_upper, 10));
 
     //while(1) print(itoa(keyboard_read_key(), 16));
@@ -175,6 +178,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ncursor      : Toggles the mouse cursor (note that it can break while scrolling)");
             print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
             print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
+            print("\ncursorcolor : Change mouse cursor color");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
@@ -183,6 +187,35 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         else if(strequ(cmd,"sensitivity")){
             setMouseSensitivity(atoi(input(), 10));
             print("\n");
+        }
+        else if(strequ(cmd,"cursorcolor")){
+            print("\n0 BLACK");
+            print("\n1 BLUE");
+            print("\n2 GREEN");
+            print("\n3 CYAN");
+            print("\n4 RED");
+            print("\n5 MAGENTA");
+            print("\n6 BROWN");
+            print("\n7 LIGHT GREY");
+            print("\n8 DARK GREY");
+            print("\n9 LIGHT BLUE");
+            print("\nA LIGHT GREEN");
+            print("\nB LIGHT CYAN");
+            print("\nC LIGHT RED");
+            print("\nD LIGHT MAGENTA");
+            print("\nE LIGHT BROWN");
+            print("\nF WHITE\n");
+            print("Left click color (1): ");
+            lcolor = atoi(input(), 16);
+            print("\nRight click color (4): ");
+            rcolor = atoi(input(), 16);
+            print("\nMiddle click color (2): ");
+            mcolor = atoi(input(), 16);
+            print("\nDefault color (7): ");
+            dcolor = atoi(input(), 16);
+            print("\n");
+
+
         }
         else if(strequ(cmd, "memory")){
             if((mbi->flags >> 6) & 1){

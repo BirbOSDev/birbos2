@@ -17,6 +17,10 @@ int oldmouseY;
 int oldentry;
 unsigned int oldscrolls;
 uint8_t sensitivity;
+unsigned char lcolor;
+unsigned char rcolor;
+unsigned char mcolor;
+unsigned char dcolor;
 
 uint8_t mouse_read();
 void handleMouseDown(uint8_t key);

@@ -14,6 +14,7 @@ void putpixel(int x,int y, int color) {
     screen[where + 2] = (color >> 16) & 255;  // RED
 }
 
+bool barEnabled = true;
 
 void fillrect(int px, int py, int sx, int sy, int color) {
  
@@ -38,13 +39,14 @@ inline uint16_t vga_entry(unsigned char uc, uint8_t color)
 }
 
 
-size_t terminal_row;
-size_t terminal_column;
+unsigned int terminal_row;
+unsigned int terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
 
 void update_cursor(uint16_t x, uint16_t y)
 {
+	terminal_putentryat('\0', 0x07, x, y);
 	uint16_t pos = y * VGA_WIDTH + x;
 	outportb(0x3D4, 0x0F);
 	outportb(0x3D5, (uint8_t) (pos & 0xFF));
@@ -94,19 +96,76 @@ void terminal_scroll(){
 	bool wasCursorEnabled = terminalmousecursor;
 	if(terminalmousecursor)mouseToggleTerminalCursor();
 	terminalScrolling = true;
+	barEnabled = false;
+	char* data = "                                                                                ";
+    for (size_t i = 0; i < strlen(data); i++){
+        terminal_putentryat(data[i], 0x00, i, 24);
+    }
     for(int i = 0; i < VGA_HEIGHT; i++){
         for (int m = 0; m < VGA_WIDTH; m++){
             terminal_buffer[i * VGA_WIDTH + m] = terminal_buffer[(i + 1) * VGA_WIDTH + m];
         }
     }
+	barEnabled = true;
 	terminalScrolling = false;
 	terminalScrolls++;
 	if(wasCursorEnabled)mouseToggleTerminalCursor();
 }
 
-void fillBG(uint8_t color){
 
+void barTask(){
+	char data[80] = "";
+
+	switch(weekday){
+          case 1: strcat(data, "Sunday "); break;
+          case 2: strcat(data, "Monday "); break;
+          case 3: strcat(data, "Tuesday "); break;
+          case 4: strcat(data, "Wednesday "); break;
+          case 5: strcat(data, "Thursday "); break;
+          case 6: strcat(data, "Friday "); break;
+          case 7: strcat(data, "Saturday "); break;
+          default: break;
+
+
+    }
+    strcat(data, itoa(day,10));
+    strcat(data, "/");
+    strcat(data, itoa(month,10));
+    strcat(data, "/");
+    strcat(data, itoa(year,10));
+    strcat(data, " ");
+    if(hour<10){
+        strcat(data, "0");
+    }
+    strcat(data, itoa(hour,10));
+    strcat(data, ":");
+    if(minute<10){
+        strcat(data, "0");
+    }
+    strcat(data, itoa(minute,10));
+    strcat(data, ":");
+    if(second<10){
+        strcat(data, "0");
+    }
+    strcat(data, itoa(second,10));
+
+	int len = strlen(data);
+	for(int i = len; i < 80 - 6; i++){
+		data[i] = ' ';
+	}
+	strcat(data, "birbOS");
+
+	
+	if(!barEnabled)
+		return;
+    for (size_t i = 0; i < strlen(data); i++){
+        terminal_putentryat(data[i], 0x87, i, 24);
+    }
+	
 }
+
+
+
 
 void terminal_putchar(char c)
 {
@@ -119,15 +178,18 @@ void terminal_putchar(char c)
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT){
-			terminal_row = VGA_HEIGHT-1;
 			terminal_scroll();
+			terminal_row = VGA_HEIGHT-1;
+			
 		}
 	}
 	if(terminal_row == VGA_HEIGHT){
+		terminal_scroll();
         terminal_row = VGA_HEIGHT-1;
-        terminal_scroll();
+        
 	}
 	update_cursor(terminal_column, terminal_row);
+	
 }
 
 void terminal_putcharat(char c, int tx, int ty)
@@ -174,7 +236,6 @@ void print(const char* data)
 {
 	for (size_t i = 0; i < strlen(data); i++)
         terminal_putchar(data[i]);
-	update_cursor(terminal_column, terminal_row);
 }
 
 void print_at(const char* data, int tx, int ty)

@@ -15,6 +15,12 @@ bool rmouseDown = false;
 bool mmouseDown = false;
 int mouseTimer = 420;
 
+unsigned char lcolor = 0x01;
+unsigned char rcolor = 0x04;
+unsigned char mcolor = 0x02;
+unsigned char dcolor = 0x07;
+
+
 int oldmouseX = 255;
 int oldmouseY = 255;
 int oldentry = 0;
@@ -92,8 +98,8 @@ void handleMouse() {
     else if (highmouseX < 0)
       highmouseX = 0;
 
-    if (highmouseY > (VGA_HEIGHT - 1) * sensitivity)
-      highmouseY = (VGA_HEIGHT - 1) * sensitivity;
+    if (highmouseY > (VGA_HEIGHT/* - 1*/) * sensitivity)
+      highmouseY = (VGA_HEIGHT/* - 1*/) * sensitivity;
     else if (highmouseY < 0)
       highmouseY = 0;
 
