@@ -67,6 +67,7 @@ void loadingTask(){
 
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
+    int _boot_timer_ = startTimer();
     terminal_initialize();
     int _task = newTask(loadingTask, 25);
     gdt_install();
@@ -79,11 +80,14 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     outportb(0x70, inportb(0x70) & 0x7F);
     sleep(150); // wait for everything to initialize
     removeTask(_task);
+    int _time_boot_ = stopTimer(_boot_timer_);
     
     //print(itoa(mbi->mem_upper, 10));
 
 
-    
+    print("boot took ");
+    print(itoa(_time_boot_, 10));
+    print("ms");
     print("\n");
     //newTask(taskTest, 1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);

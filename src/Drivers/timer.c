@@ -5,11 +5,11 @@ extern terminal_start;
 
 
 
-
-
 void (*tasks[64]) (void);
+int timers[64];
 
 int taskInterval[64];
+unsigned int timersMsPassed[64];
 
 
 void timer_handler(struct regs *r)
@@ -22,6 +22,11 @@ void timer_handler(struct regs *r)
             if(timer_ticks % taskInterval[i] == 0){
                 tasks[i]();
             }
+        }
+    }
+    for(int i = 0; i<64; i++){
+        if(timers[i] != 0){
+            timersMsPassed[i]++;
         }
     }
 
@@ -44,6 +49,16 @@ void timer_handler(struct regs *r)
 
 }
 
+int startTimer(){
+    for(int i = 0; i < 64; i++){
+        if(timers[i] == 0){
+            timers[i] = 1;
+            return i;
+        }
+    }
+    return -1;
+}
+
 int newTask(void (*func)(void), int interval){
     for(int i = 0; i < 64; i++){
         if(tasks[i] == 0){
@@ -56,17 +71,21 @@ int newTask(void (*func)(void), int interval){
 
 }
 
-void newTaskAt(void (*func)(), int interval, int pos){
-    tasks[pos] = func;
-    taskInterval[pos] = interval;
-
-}
 
 void removeTask(int pos){
     tasks[pos] = 0;
     taskInterval[pos] = 0;
 
 }
+
+unsigned int stopTimer(int pos){
+    timers[pos] = 0;
+    unsigned int _t = timersMsPassed[pos];
+    timersMsPassed[pos] = 0;
+    return _t - 1;
+
+}
+
 
 
 void timer_wait(int ms)
