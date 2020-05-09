@@ -161,19 +161,24 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             }
         }
         else if(strequ(cmd,"help")){
-            print("\nclear     : Clears the screen");
-            print("\necho      : Takes input text reprint a given text");
-            print("\nabout     : Shows details of the OS");
-            print("\ncalc      : Calculator");
-            print("\ndie       : Halts the system");
-            print("\ntime      : Shows the time from RTC");
-            print("\nrand      : Returns a random number");
-            print("\ncursor    : Toggles the mouse cursor (note that it can break while scrolling)");
-            print("\ncpuvendor : Get the 12 character vendor string from CPUID");
+            print("\nclear       : Clears the screen");
+            print("\necho        : Takes input text reprint a given text");
+            print("\nabout       : Shows details of the OS");
+            print("\ncalc        : Calculator");
+            print("\ndie         : Halts the system");
+            print("\ntime        : Shows the time from RTC");
+            print("\nrand        : Returns a random number");
+            print("\ncursor      : Toggles the mouse cursor (note that it can break while scrolling)");
+            print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
+            print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
             terminal_initialize();
+        }
+        else if(strequ(cmd,"sensitivity")){
+            setMouseSensitivity(atoi(input(), 10));
+            print("\n");
         }
         else if(strequ(cmd, "memory")){
             if((mbi->flags >> 6) & 1){

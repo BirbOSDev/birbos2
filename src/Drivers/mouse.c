@@ -3,6 +3,9 @@
 
 uint8_t mouseCycle = 0;
 uint8_t mouseByte[3];
+uint8_t sensitivity = 4;
+int16_t highmouseX = 256 * 4;
+int16_t highmouseY = 256 * 4;
 int16_t mouseX = 256;
 int16_t mouseY = 256;
 bool _mouseIRQ = false;
@@ -38,23 +41,29 @@ void handleMouse() {
 		int8_t mouseXd = mouseByte[1];
 		int8_t mouseYd = mouseByte[2];
 		mouseCycle = 0;
-		mouseX += mouseXd;
-		mouseY -= mouseYd;
+		highmouseX += mouseXd;
+		highmouseY -= mouseYd;
 
 		if ((getBit(mouseByte[0], 0) != 0) || (getBit(mouseByte[0], 1) != 0))
       handleMouseDown(0);
 		else
 			handleMouseUp(0);
     
-    if (mouseX > VGA_WIDTH - 1)
-      mouseX = VGA_WIDTH - 1;
-    else if (mouseX < 0)
-      mouseX = 0;
+    if (highmouseX > (VGA_WIDTH - 1) * sensitivity)
+      highmouseX = (VGA_WIDTH - 1) * sensitivity;
+    else if (highmouseX < 0)
+      highmouseX = 0;
 
-    if (mouseY > VGA_HEIGHT - 1)
-      mouseY = VGA_HEIGHT - 1;
-    else if (mouseY < 0)
-      mouseY = 0;
+    if (highmouseY > (VGA_HEIGHT - 1) * sensitivity)
+      highmouseY = (VGA_HEIGHT - 1) * sensitivity;
+    else if (highmouseY < 0)
+      highmouseY = 0;
+
+      mouseX = highmouseX / sensitivity;
+      mouseY = highmouseY / sensitivity;
+  
+    
+
 
     
 
@@ -63,6 +72,10 @@ void handleMouse() {
 		break;
 	  };
 	}
+}
+
+void setMouseSensitivity(int s){
+  sensitivity = s;
 }
 
 void mouseToggleTerminalCursor(){
