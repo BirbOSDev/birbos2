@@ -21,7 +21,6 @@
  //make it shutup
  static void nosound() {
  	uint8_t tmp = inportb(0x61) & 0xFC;
- 
  	outportb(0x61, tmp);
  }
  
@@ -30,6 +29,11 @@
  	 play_sound(freq);
  	 timer_wait(ms);
  	 nosound();
+ }
+
+int asyncBeep(uint32_t freq, uint32_t ms) {
+ 	 play_sound(freq);
+ 	 return newTask(nosound, ms, 1);
  }
 
  void bootbeep(){

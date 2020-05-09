@@ -69,7 +69,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     int _boot_timer_ = startTimer();
     terminal_initialize();
-    int _task = newTask(loadingTask, 25);
+    int _task = newTask(loadingTask, 25, -1);
     gdt_install();
     idt_install();
     irq_install();
@@ -83,7 +83,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     int _time_boot_ = stopTimer(_boot_timer_);
     
     //print(itoa(mbi->mem_upper, 10));
-
+    
 
     print("boot took ");
     print(itoa(_time_boot_, 10));

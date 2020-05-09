@@ -9,6 +9,8 @@ void (*tasks[64]) (void);
 int timers[64];
 
 int taskInterval[64];
+int taskMs[64];
+int taskRuns[64];
 unsigned int timersMsPassed[64];
 
 
@@ -19,9 +21,19 @@ void timer_handler(struct regs *r)
     read_rtc();
     for(int i = 0; i<64; i++){
         if(tasks[i] != 0){
-            if(timer_ticks % taskInterval[i] == 0){
-                tasks[i]();
+            if(taskRuns[i] == 0){
+                removeTask(i);
+                continue;
             }
+            taskMs[i]++;
+            if(taskMs[i] == taskInterval[i]){
+                taskMs[i] = 0;
+                tasks[i]();
+                if(taskRuns[i] != -1)
+                    taskRuns[i]--;
+            }
+            
+            
         }
     }
     for(int i = 0; i<64; i++){
@@ -59,10 +71,11 @@ int startTimer(){
     return -1;
 }
 
-int newTask(void (*func)(void), int interval){
+int newTask(void (*func)(void), int interval, int runs){
     for(int i = 0; i < 64; i++){
         if(tasks[i] == 0){
             tasks[i] = func;
+            taskRuns[i] = runs;
             taskInterval[i] = interval;
             return i;
         }
