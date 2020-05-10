@@ -210,8 +210,8 @@ void terminalRenderTask(int taskno){
         drawBox(219, 0x77, testWindowX, testWindowX+40, testWindowY, testWindowY+1);
         menuDrawClickableText("X", testWindowX+39, testWindowX+40, testWindowY);
         textAt("   Title", 0x78, testWindowX, testWindowX+40, testWindowY);
-        textAt(" BirbOS TUI Test window.", 0x87, testWindowX, testWindowX+40, testWindowY+2);
-        textAt(" WRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTEST", 0x87, testWindowX, testWindowX+40, testWindowY+4);
+        textAt(" xandrei was here", 0x87, testWindowX, testWindowX+40, testWindowY+2);
+        textAt(" mori in foc", 0x87, testWindowX, testWindowX+40, testWindowY+4);
         if(lmouseDown){
             int ret = stopTimer(clickTimer);
             if(ret > 50 || ret == -2){
