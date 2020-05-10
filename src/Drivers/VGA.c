@@ -155,6 +155,31 @@ void terminal_putchar(char c)
 	
 }
 
+void terminal_putchar(char c)
+{
+	if (c == '\n') {
+        terminal_row++;
+        terminal_column = -1;
+    } else {
+        _terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+    }
+	if (++terminal_column == VGA_WIDTH) {
+		terminal_column = 0;
+		if (++terminal_row == VGA_HEIGHT){
+			terminal_scroll();
+			terminal_row = VGA_HEIGHT-1;
+			
+		}
+	}
+	if(terminal_row == VGA_HEIGHT){
+		terminal_scroll();
+        terminal_row = VGA_HEIGHT-1;
+        
+	}
+	update_cursor(terminal_column, terminal_row);
+	
+}
+
 void terminal_putcharat(char c, int tx, int ty)
 {
 	
@@ -199,6 +224,12 @@ void print(const char* data)
 {
 	for (size_t i = 0; i < strlen(data); i++)
         terminal_putchar(data[i]);
+}
+
+void _print(const char* data)
+{
+	for (size_t i = 0; i < strlen(data); i++)
+        _terminal_putchar(data[i]);
 }
 
 
@@ -269,11 +300,26 @@ void print_at(const char* data, int tx, int ty)
 	update_cursor(terminal_column, terminal_row);
 }
 
+void print_at_c(const char* data, int tx, int ty, uint8_t color)
+{
+	int oldcl = terminal_color;
+	int oldr = terminal_row;
+	int oldc = terminal_column;
+	terminal_row = ty;
+	terminal_column = tx;
+	print(data);
+	terminal_row = oldr;
+	terminal_column = oldc;
+	terminal_color = oldcl;
+	update_cursor(terminal_column, terminal_row);
+}
+
 void print_c(const char* data, uint8_t color)
 {
+	int oldc = terminal_color;
 	terminal_color = color;
 	print(data);
-	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	terminal_color = oldc;
 	update_cursor(terminal_column, terminal_row);
 }
 

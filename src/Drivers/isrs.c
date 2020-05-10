@@ -132,12 +132,12 @@ void fault_handler(struct regs *r)
     showMenu = false;
     renderErrorWindow(exception_messages[r->int_no]);
     if(r->int_no == 2){
-        textAt("system control port a:\n", 0x87, 20+1, 20+40, 5+4);
+        textAt("system control port a:", 0x87, 20+1, 20+40, 5+4);
         textAt(itoa(inportb(0x92), 2), 0x87, 20+25, 20+40, 5+4);
-        textAt("system control port b:\n", 0x87, 20+1, 20+40, 5+5);
+        textAt("system control port b:", 0x87, 20+1, 20+40, 5+5);
         textAt(itoa(inportb(0x61), 2), 0x87, 20+25, 20+40, 5+5);
     }
-
+    textAt("system halted", 0x87, 20+1, 20+40, 5+8);
     disable_all_irqs();
     __asm__ __volatile__ ("cli\nhlt");
 }

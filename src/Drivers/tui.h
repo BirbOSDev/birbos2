@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../common.h"
+
 bool __set__;
 int clickTimer;
 bool showMenu;
@@ -11,5 +13,6 @@ bool __drag;
 int __prevX;
 int __prevY;
 int __grabX;
+int renderdelay;
 
 void terminalRenderTask(int taskno);

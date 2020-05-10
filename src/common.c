@@ -24,6 +24,34 @@ void srand( unsigned int seed ){
 }
 
 
+
+char *repeat(const char *s, int x){
+    if(s){
+        int i, count = 0;
+
+        while(s[count] != '\0'){
+            ++count;
+        }
+
+        char *newArray = malloc(count * x + 1);
+        if(newArray){
+            char *na = newArray;
+            for(i = 0; i < x; ++i) {
+                const char *p=s;
+                while(*p)
+                    *na++ = *p++;
+            }
+            *na = '\0';
+        }
+        return newArray;
+    } else {
+        return NULL;
+    }
+}
+
+
+
+
 char setLowerNibble(char orig, char nibble) {
     char res = orig;
     res &= 0xF0; // Clear out the lower nibble

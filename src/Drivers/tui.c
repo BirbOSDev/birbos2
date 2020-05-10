@@ -14,6 +14,7 @@ bool __drag = false;
 int __prevX = 0;
 int __prevY = 0;
 int __grabX = 0;
+int renderdelay = 60;
 
 void drawBox(uint8_t c, uint8_t col, int x, int x2, int y, int y2){
     for(int i = x; i<x2; i++){
@@ -119,12 +120,12 @@ void renderCursor(){
         char inverted = nibble;
         //bgcolor = (bgcolor & 0xF0) | (bgcolor & 0xF);
         if(inverted == 0x8){
-            inverted = 0xF;
+            inverted = 0x7;
             __e = true;
         }
         if(getBit(inverted, 4) && !__e){
             inverted &= ~(1 << 3);
-        } else {
+        } else if (!__e) {
             inverted |= 1 << 3;
         }
 
@@ -154,6 +155,7 @@ void renderErrorWindow(char* err){
 
 
 void terminalRenderTask(int taskno){
+    removeTask(taskno);
     memcpy(terminal_buffer, terminal_buffer_layer, sizeof(uint16_t) * 2048);
     
     barRender();
@@ -161,7 +163,7 @@ void terminalRenderTask(int taskno){
     if(lmouseDown){
         if(mouseX > 73 && mouseX < 80 && mouseY == 24 && terminalmousecursor){
             int ret = stopTimer(clickTimer);
-            if(ret > 50 || ret == -2){
+            if(ret > 50 + renderdelay || ret == -2){
                 if(showMenu){
                     showMenu = false;
                 }else
@@ -191,7 +193,7 @@ void terminalRenderTask(int taskno){
         menuDrawClickableText("    Shutdown     ", 63, 80, 22);
         if(lmouseDown){
             int ret = stopTimer(clickTimer);
-            if(ret > 50 || ret == -2){
+            if(ret > 50 + renderdelay || ret == -2){
                 if(mouseX > 63 && mouseX < 80 && mouseY == 14 && terminalmousecursor){
                     showMenu = false;
                     showTestWindow = true;
@@ -209,6 +211,7 @@ void terminalRenderTask(int taskno){
                 if(mouseX > 63 && mouseX < 80 && mouseY == 22 && terminalmousecursor){
                     showMenu = false;
                     acpiPowerOff();
+                    
                 }
             }
             clickTimer = startTimer();
@@ -227,7 +230,7 @@ void terminalRenderTask(int taskno){
         textAt(" mori in foc", 0x87, testWindowX, testWindowX+40, testWindowY+4);
         if(lmouseDown){
             int ret = stopTimer(clickTimer);
-            if(ret > 50 || ret == -2){
+            if(ret > 50 + renderdelay || ret == -2){
                 if(mouseX > testWindowX+38 && mouseX < testWindowX+40 && mouseY == testWindowY && terminalmousecursor)
                     showTestWindow = false;
             }
@@ -263,6 +266,7 @@ void terminalRenderTask(int taskno){
     }
 
     renderCursor();
+    newTask(terminalRenderTask, renderdelay);
 }
 
 

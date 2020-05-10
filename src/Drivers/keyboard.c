@@ -17,6 +17,26 @@ uint8_t keyboard_read_key()
     return key_code;
 }
 
+uint8_t old_keyboard_read_key()
+{
+    uint8_t key_code = 0;
+	if (inportb(0x64) & 1){
+        key_code = inportb(0x60);
+        
+        while(key_code==0){}
+        return key_code;
+	}
+    return 0;
+}
+
+void waitForACK(){
+    uint8_t _r = 0;
+    while(_r != 0xFA) {_r = inportb(0x64);}
+}
+
+
+
+
 void keyboardIRQHandler(struct regs *r){
     _keyboardirq = 1;
     //print("key");

@@ -15,10 +15,6 @@ unsigned int timersMsPassed[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 void timer_handler(struct regs *r)
 {
-    timer_ticks++;
-    if(timer_ticks % 1000 == 0)
-        read_rtc();
-    maxrand(rtcGetUnixTimestamp(), INT32_MAX);
     for(int i = 0; i<64; i++){
         if(tasks[i] != 0){
             if(taskRuns[i] == 0){
@@ -41,6 +37,11 @@ void timer_handler(struct regs *r)
             timersMsPassed[i]++;
         }
     }
+    timer_ticks++;
+    if(timer_ticks % 1000 == 0)
+        read_rtc();
+    maxrand(rtcGetUnixTimestamp(), INT32_MAX);
+    
 
     
     
@@ -91,6 +92,14 @@ void setTaskDelay(int pos, int delay){
     taskInterval[pos] = delay;
     taskMs[pos] = 0;
 
+}
+
+unsigned int getTimerMs(int pos){
+    if(pos > 63 || pos < 0)
+        return -2;
+    if(timers[pos] == 0)
+        return -3;
+    return timersMsPassed[pos];
 }
 
 

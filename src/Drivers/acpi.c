@@ -1,4 +1,6 @@
 #include <stddef.h>
+#include "tui.h"
+#include "VGA.h"
 
 typedef unsigned int dword;
 typedef unsigned short word;
@@ -234,8 +236,14 @@ int initAcpi(void)
 
 void acpiPowerOff(void)
 {
-   if (SCI_EN == 0){
-       print("\nacpi: shutdown failed.\n\n");
+   if (!shutdownSupported()){
+      __asm__ __volatile__ ("sti");
+      renderErrorWindow("acpi shutdown not supported");
+      uint8_t key = 0;
+      while(!(key = old_keyboard_read_key())) {}
+
+      
+
       return;
    }
 
@@ -247,8 +255,5 @@ void acpiPowerOff(void)
 }
 
 int shutdownSupported(){
-   if(SCI_EN==0){
-      return 0;
-   }
-   return 1;
+   return SCI_EN;
 }

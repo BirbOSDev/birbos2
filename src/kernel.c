@@ -83,7 +83,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     mouse_install();
     outportb(0x70, inportb(0x70) & 0x7F);
     //newTask(barTask, 5);
-    int rendertaskno = newTask(terminalRenderTask, 32);
+    int rendertaskno = newTask(terminalRenderTask, renderdelay);
     mouseToggleTerminalCursor();
     keyboard_send_key(0xe1);
     read_rtc();
@@ -96,8 +96,9 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     // disable blinking bit and use it for background
     inportb(0x3DA);
     outportb(0x3C0, 0x30);
-    int _ = inportb(0x3C1);
-    outportb(0x3C0, _ & 0xF7);
+    //int _ = inportb(0x3C1);
+    outportb(0x3C0, 0b00010100);
+
     //
     
     //print(itoa(mbi->mem_upper, 10));
@@ -135,8 +136,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             itoa(1/0, 1/0);
         }
         if(strequ(cmd, "renderdelay")){
-            print("\nInsert delay in MS (default is 33ms): ");
-            setTaskDelay(rendertaskno, atoi(input(), 10));
+            print("\nInsert delay in MS (default is 60ms): ");
+            renderdelay = atoi(input(), 10);
             print("\n");
         }
         else if(strequ(cmd,"about")){
@@ -207,7 +208,6 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ncursor      : Toggles the mouse cursor (note that it can break while scrolling)");
             print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
             print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
-            print("\ncursorcolor : Change mouse cursor color");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
