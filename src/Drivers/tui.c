@@ -8,6 +8,12 @@ int clickTimer = 420;
 bool showMenu = false;
 bool showWeekday = false;
 bool showTestWindow = false;
+int testWindowX = 20;
+int testWindowY = 5;
+bool __drag = false;
+int __prevX = 0;
+int __prevY = 0;
+int __grabX = 0;
 
 void drawBox(uint8_t c, uint8_t col, int x, int x2, int y, int y2){
     for(int i = x; i<x2; i++){
@@ -168,26 +174,75 @@ void terminalRenderTask(int taskno){
         menuDrawClickableText("--[Placeholder]--", 63, 80, 18);
         menuDrawClickableText("--[Placeholder]--", 63, 80, 19);
         menuDrawClickableText("--[Placeholder]--", 63, 80, 20);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 21);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 22);
+        menuDrawClickableText("     Reboot      ", 63, 80, 21);
+        menuDrawClickableText("    Shutdown     ", 63, 80, 22);
         if(lmouseDown){
-            if(mouseX > 63 && mouseX < 80 && mouseY == 14 && terminalmousecursor)
-                showTestWindow = true;
+            int ret = stopTimer(clickTimer);
+            if(ret > 50 || ret == -2){
+                if(mouseX > 63 && mouseX < 80 && mouseY == 14 && terminalmousecursor){
+                    showTestWindow = true;
+                    testWindowX = 20;
+                    testWindowY = 5;
+                }
+                if(mouseX > 63 && mouseX < 80 && mouseY == 21 && terminalmousecursor){
+                    uint8_t good = 0x02;
+                    while (good & 0x02)
+                        good = inportb(0x64);
+                    outportb(0x64, 0xFE);
+                    asm("hlt");
+                }
+                if(mouseX > 63 && mouseX < 80 && mouseY == 22 && terminalmousecursor){
+                    acpiPowerOff();
+                }
+            }
+            clickTimer = startTimer();
+            
         }
         
         
     }
 
     if(showTestWindow){
-        drawBox(219, 0x88, 20, 60, 5, 15);
-        drawBox(219, 0x77, 20, 60, 5, 6);
-        menuDrawClickableText("X", 59, 60, 5);
-        textAt("   Title", 0x78, 20, 60, 5);
-        textAt(" BirbOS TUI Test window.", 0x87, 20, 60, 7);
-        textAt(" WRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTEST", 0x87, 20, 60, 9);
+        drawBox(219, 0x88, testWindowX, testWindowX+40, testWindowY, testWindowY+10);
+        drawBox(219, 0x77, testWindowX, testWindowX+40, testWindowY, testWindowY+1);
+        menuDrawClickableText("X", testWindowX+39, testWindowX+40, testWindowY);
+        textAt("   Title", 0x78, testWindowX, testWindowX+40, testWindowY);
+        textAt(" BirbOS TUI Test window.", 0x87, testWindowX, testWindowX+40, testWindowY+2);
+        textAt(" WRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTEST", 0x87, testWindowX, testWindowX+40, testWindowY+4);
         if(lmouseDown){
-            if(mouseX > 58 && mouseX < 60 && mouseY == 5 && terminalmousecursor)
-                showTestWindow = false;
+            int ret = stopTimer(clickTimer);
+            if(ret > 50 || ret == -2){
+                if(mouseX > testWindowX+38 && mouseX < testWindowX+40 && mouseY == testWindowY && terminalmousecursor)
+                    showTestWindow = false;
+            }
+            clickTimer = startTimer();
+            
+            /*
+            if(mouseX >= testWindowX && mouseX <= testWindowX+37 && mouseY == testWindowY && terminalmousecursor){
+                __drag = true;
+                __prevX = mouseX;
+                __prevY = mouseY;
+                __grabX = mouseX - testWindowX;
+            }
+            if((__prevX != mouseX || __prevY != mouseY) && __drag){
+                __drag = false;
+                __prevX = mouseX;
+                __prevY = mouseY;
+                testWindowY = mouseY;
+                print(itoa(__grabX, 10));
+                print("  ");
+
+                testWindowX = mouseX - __grabX;
+                testWindowX = mouseX;
+                if(testWindowX+40 > 80){
+                    testWindowX = 40;
+                }
+                
+            }
+            */
+            
+            
+            
         }
     }
 

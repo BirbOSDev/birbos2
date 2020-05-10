@@ -90,6 +90,13 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     initAcpi();
     
    
+    // disable blinking bit and use it for background
+    inportb(0x3DA);
+    outportb(0x3C0, 0x30);
+    int _ = inportb(0x3C1);
+    outportb(0x3C0, _ & 0xF7);
+    //
+    
     //print(itoa(mbi->mem_upper, 10));
 
     //while(1) print(itoa(keyboard_read_key(), 16));
