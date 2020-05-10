@@ -67,6 +67,9 @@ void loadingTask(){
 
 
 
+
+
+
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     int _boot_timer_ = startTimer();
@@ -115,6 +118,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print("scanlines are pretty much unavoidable on a real machine.\n\n");
     //newTask(taskTest, 1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
+    
     while(true){
         print("birb>");
         char* cmd = input();
@@ -126,6 +130,9 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print(string);
             print("\n");
             
+        }
+        if(strequ(cmd, "crash")){
+            itoa(1/0, 1/0);
         }
         if(strequ(cmd, "renderdelay")){
             print("\nInsert delay in MS (default is 33ms): ");

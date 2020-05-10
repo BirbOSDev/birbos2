@@ -83,3 +83,9 @@ void irq_handler(struct regs *r)
     }
     outportb(0x20, 0x20);
 }
+
+void disable_all_irqs(){
+    for(int i = 0; i < 16; i++){
+        irq_uninstall_handler(i);
+    }
+}

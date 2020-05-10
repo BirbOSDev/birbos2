@@ -116,7 +116,9 @@ char *exception_messages[] =
 
 void fault_handler(struct regs *r)
 {
+    
     terminal_initialize();
+    /*
     printf("error: %s", exception_messages[r->int_no]);
     if(r->int_no == 2){
         print("\nadditional info:\nsystem control port a: ");
@@ -125,8 +127,28 @@ void fault_handler(struct regs *r)
         print(itoa(inportb(0x61), 2));
     }
     print("\nsystem halted.");
-    memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
-    __asm__ __volatile__ ("cli\nhlt");
+    */
+    showTestWindow = false;
+    showMenu = false;
+    renderErrorWindow(exception_messages[r->int_no]);
+    if(r->int_no == 2){
+        textAt("system control port a:\n", 0x87, 20+1, 20+40, 5+4);
+        textAt(itoa(inportb(0x92), 2), 0x87, 20+25, 20+40, 5+4);
+        textAt("system control port b:\n", 0x87, 20+1, 20+40, 5+5);
+        textAt(itoa(inportb(0x61), 2), 0x87, 20+25, 20+40, 5+5);
+    }
+
+    textAt("rebooting in about 10 seconds", 0x87, 20+1, 20+40, 5+8);
+    disable_all_irqs();
+    __asm__ __volatile__ ("cli");
+    for(int i = 0; i<534765600/3; i++){
+        itoa(1, 2);
+    }
+    uint8_t good = 0x02;
+    while (good & 0x02)
+        good = inportb(0x64);
+    outportb(0x64, 0xFE);
+    asm("hlt");
 }
 
 void custom_fault_handler(char* error)

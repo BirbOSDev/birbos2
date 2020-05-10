@@ -29,6 +29,10 @@ void textAt(char* str, uint8_t col, int x, int wrapx, int y){
     int currx = x;
     
     for(int i = 0; i<strlen(str); i++){
+        if(str[i] == '\n'){
+            wraps++;
+            continue;
+        }
         if(c >= wrapx){
             c=x;
             currx=x;
@@ -137,6 +141,15 @@ void menuDrawClickableText(char* text, int posx, int maxx, int posy){
     } else {
         textAt(text, 0x78, posx, maxx, posy);
     }
+}
+
+
+void renderErrorWindow(char* err){
+    drawBox(219, 0x88, 20, 20+40, 5, 5+10);
+    drawBox(219, 0x77, 20, 20+40, 5, 5+1);
+    menuDrawClickableText("X", 20+39, 20+40, 5);
+    textAt("   ERROR", 0x78, 20, 20+40, 5);
+    textAt(err, 0x87, 20+1, 20+40, 5+2);
 }
 
 
@@ -251,3 +264,5 @@ void terminalRenderTask(int taskno){
 
     renderCursor();
 }
+
+
