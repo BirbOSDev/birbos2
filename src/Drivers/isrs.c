@@ -138,17 +138,8 @@ void fault_handler(struct regs *r)
         textAt(itoa(inportb(0x61), 2), 0x87, 20+25, 20+40, 5+5);
     }
 
-    textAt("rebooting in about 10 seconds", 0x87, 20+1, 20+40, 5+8);
     disable_all_irqs();
-    __asm__ __volatile__ ("cli");
-    for(int i = 0; i<534765600/3; i++){
-        itoa(1, 2);
-    }
-    uint8_t good = 0x02;
-    while (good & 0x02)
-        good = inportb(0x64);
-    outportb(0x64, 0xFE);
-    asm("hlt");
+    __asm__ __volatile__ ("cli\nhlt");
 }
 
 void custom_fault_handler(char* error)
