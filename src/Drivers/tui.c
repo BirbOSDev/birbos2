@@ -110,24 +110,24 @@ void renderCursor(){
 
         uint16_t num = _terminal_getentryat(mouseX, mouseY);
         num = (num >> 8)&0xFF;
+        bool __e = false;
         char nibble = (char) ((num >> 4) & 0x0F);
+        char inverted = nibble;
         //bgcolor = (bgcolor & 0xF0) | (bgcolor & 0xF);
-      
-
-        lcolor = setUpperNibble(lcolor, nibble);
-        rcolor = setUpperNibble(rcolor, nibble);
-        mcolor = setUpperNibble(mcolor, nibble);
-        dcolor = setUpperNibble(dcolor, nibble);
-
-        if(lmouseDown){
-            _terminal_putentryat(_mc, lcolor, mouseX, mouseY);
-        }else if (rmouseDown){
-            _terminal_putentryat(_mc, rcolor, mouseX, mouseY);
-        } else if (mmouseDown) {
-            _terminal_putentryat(_mc, mcolor, mouseX, mouseY);
-        } else {
-            _terminal_putentryat(_mc, dcolor, mouseX, mouseY);
+        if(inverted == 0x8){
+            inverted = 0xF;
+            __e = true;
         }
+        if(getBit(inverted, 4) && !__e){
+            inverted &= ~(1 << 3);
+        } else {
+            inverted |= 1 << 3;
+        }
+
+        dcolor = setUpperNibble(dcolor, nibble);
+        dcolor = setLowerNibble(dcolor, inverted);
+
+        _terminal_putentryat(_mc, dcolor, mouseX, mouseY);
     }
 }
 
@@ -180,11 +180,13 @@ void terminalRenderTask(int taskno){
             int ret = stopTimer(clickTimer);
             if(ret > 50 || ret == -2){
                 if(mouseX > 63 && mouseX < 80 && mouseY == 14 && terminalmousecursor){
+                    showMenu = false;
                     showTestWindow = true;
                     testWindowX = 20;
                     testWindowY = 5;
                 }
                 if(mouseX > 63 && mouseX < 80 && mouseY == 21 && terminalmousecursor){
+                    showMenu = false;
                     uint8_t good = 0x02;
                     while (good & 0x02)
                         good = inportb(0x64);
@@ -192,6 +194,7 @@ void terminalRenderTask(int taskno){
                     asm("hlt");
                 }
                 if(mouseX > 63 && mouseX < 80 && mouseY == 22 && terminalmousecursor){
+                    showMenu = false;
                     acpiPowerOff();
                 }
             }

@@ -198,35 +198,6 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             setMouseSensitivity(atoi(input(), 10));
             print("\n");
         }
-        else if(strequ(cmd,"cursorcolor")){
-            print("\n0 BLACK");
-            print("\n1 BLUE");
-            print("\n2 GREEN");
-            print("\n3 CYAN");
-            print("\n4 RED");
-            print("\n5 MAGENTA");
-            print("\n6 BROWN");
-            print("\n7 LIGHT GREY");
-            print("\n8 DARK GREY");
-            print("\n9 LIGHT BLUE");
-            print("\nA LIGHT GREEN");
-            print("\nB LIGHT CYAN");
-            print("\nC LIGHT RED");
-            print("\nD LIGHT MAGENTA");
-            print("\nE LIGHT BROWN");
-            print("\nF WHITE\n");
-            print("Left click color (1): ");
-            lcolor = atoi(input(), 16);
-            print("\nRight click color (4): ");
-            rcolor = atoi(input(), 16);
-            print("\nMiddle click color (2): ");
-            mcolor = atoi(input(), 16);
-            print("\nDefault color (7): ");
-            dcolor = atoi(input(), 16);
-            print("\n");
-
-
-        }
         else if(strequ(cmd, "memory")){
             if((mbi->flags >> 6) & 1){
                 print(itoa(mbi->mem_upper, 10));
@@ -288,6 +259,24 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         }
         else if(strequ(cmd,"cursor")){
             mouseToggleTerminalCursor();
+        }
+        else if(strequ(cmd,"color")){
+            print_c("#", 0x00);
+            print_c("#", 0x11);
+            print_c("#", 0x22);
+            print_c("#", 0x33);
+            print_c("#", 0x44);
+            print_c("#", 0x55);
+            print_c("#", 0x66);
+            print_c("#", 0x77);
+            print_c("#", 0x88);
+            print_c("#", 0x99);
+            print_c("#", 0xAA);
+            print_c("#", 0xBB);
+            print_c("#", 0xCC);
+            print_c("#", 0xDD);
+            print_c("#", 0xEE);
+            print_c("#", 0xFF);
         }
         else if(strequ(cmd,"cpuvendor")){
             char str[13];
