@@ -117,8 +117,7 @@ char *exception_messages[] =
 void fault_handler(struct regs *r)
 {
     terminal_initialize();
-    print("error: ");
-    print(exception_messages[r->int_no]);
+    printf("error: %s", exception_messages[r->int_no]);
     if(r->int_no == 2){
         print("\nadditional info:\nsystem control port a: ");
         print(itoa(inportb(0x92), 2));

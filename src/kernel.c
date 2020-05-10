@@ -80,7 +80,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     mouse_install();
     outportb(0x70, inportb(0x70) & 0x7F);
     //newTask(barTask, 5);
-    newTask(terminalRenderTask, 3);
+    int rendertaskno = newTask(terminalRenderTask, 32);
     mouseToggleTerminalCursor();
     keyboard_send_key(0xe1);
     read_rtc();
@@ -105,7 +105,14 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print("boot took ");
     print(itoa(_time_boot_, 10));
     print("ms");
-    print("\n");
+    print("\n\n");
+    terminal_setcolor(0x4F);
+    print("!experimental TUI version!\n");
+    terminal_setcolor(0x07);
+    print("if you have any rendering problems, \n");
+    print("try adjusting the rate using the 'renderdelay' command.\n");
+    print("use what works best, but 33ms or 20ms might work the best.\n");
+    print("scanlines are pretty much unavoidable on a real machine.\n\n");
     //newTask(taskTest, 1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
     while(true){
@@ -119,6 +126,11 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print(string);
             print("\n");
             
+        }
+        if(strequ(cmd, "renderdelay")){
+            print("\nInsert delay in MS (default is 33ms): ");
+            setTaskDelay(rendertaskno, atoi(input(), 10));
+            print("\n");
         }
         else if(strequ(cmd,"about")){
         

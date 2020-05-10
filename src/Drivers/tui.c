@@ -141,7 +141,7 @@ void menuDrawClickableText(char* text, int posx, int maxx, int posy){
 
 
 void terminalRenderTask(int taskno){
-    memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
+    memcpy(terminal_buffer, terminal_buffer_layer, sizeof(uint16_t) * 2048);
     
     barRender();
 

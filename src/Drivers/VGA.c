@@ -1,6 +1,7 @@
 #include "../all_drivers.h"
 #include "mouse.h"
 #define BIT_SET(a,b) ((a) |= (1ULL<<(b)))
+#include <stdarg.h>
 
 
 uint8_t* screen = (uint8_t*)0xA0000;
@@ -199,6 +200,62 @@ void print(const char* data)
 	for (size_t i = 0; i < strlen(data); i++)
         terminal_putchar(data[i]);
 }
+
+
+
+void printf(char* format,...) 
+{ 
+	char *traverse; 
+	unsigned int i; 
+	char *s; 
+	
+	//Module 1: Initializing Myprintf's arguments 
+	va_list arg; 
+	va_start(arg, format); 
+	
+	for(traverse = format; *traverse != '\0'; traverse++) 
+	{ 
+		while( *traverse != '%' ) 
+		{ 
+			terminal_putchar(*traverse);
+			traverse++; 
+		} 
+		
+		traverse++; 
+		
+		//Module 2: Fetching and executing arguments
+		switch(*traverse) 
+		{ 
+			case 'c' : i = va_arg(arg,int);		//Fetch char argument
+						terminal_putchar(i);
+						break; 
+						
+			case 'd' : i = va_arg(arg,int); 		//Fetch Decimal/Integer argument
+						if(i<0) 
+						{ 
+							i = -i;
+							terminal_putchar('-'); 
+						} 
+						print(itoa(i,10));
+						break; 
+						
+			case 'o': i = va_arg(arg,unsigned int); //Fetch Octal representation
+						print(itoa(i,8));
+						break; 
+						
+			case 's': s = va_arg(arg,char*); 		//Fetch string
+						print(s); 
+						break; 
+						
+			case 'x': i = va_arg(arg,unsigned int); //Fetch Hexadecimal representation
+						print(itoa(i,16));
+						break; 
+		}	
+	} 
+	
+	//Module 3: Closing argument list to necessary clean-up
+	va_end(arg); 
+} 
 
 void print_at(const char* data, int tx, int ty)
 {

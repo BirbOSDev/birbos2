@@ -83,6 +83,17 @@ void removeTask(int pos){
 
 }
 
+void setTaskDelay(int pos, int delay){
+    if(pos > 63 || pos > 0)
+        return;
+    if(tasks[pos] == 0)
+        return;
+    taskInterval[pos] = delay;
+    taskMs[pos] = 0;
+
+}
+
+
 unsigned int stopTimer(int pos){
     if(pos > 63 || pos < 0)
         return -2;
