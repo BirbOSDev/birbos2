@@ -300,8 +300,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         }
         else if(strequ(cmd,"die")){
             terminal_initialize();
-            char* death[7] = {"string1","string2","string3","string4","string5","string6","string7"};
-            print_c(death[randomInt(6)],VGA_COLOR_RED);
+            char* death[7] = {"your PC is dead","beaned","NOW RESTART THE PC DAMN YOU","bruh. you halted your pc. nice","YEET THE POWER","go commit bean","qemu is hot garbage"};
+            print_c(death[randomInt(6)],VGA_COLOR_GREEN);
             memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
             __asm__ __volatile__("cli\nhlt");
             
