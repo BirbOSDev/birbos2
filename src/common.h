@@ -22,7 +22,7 @@ uint16_t inportw(uint16_t port);
 void outportw(uint16_t port, uint16_t value);
 void outportdw(uint16_t port, uint32_t value);
 uint32_t inportdw(uint16_t port);
-void *memcpy(void *dest, const void *src, size_t count);
+void memcpy( void *pDest, void *pSrc, uint32_t len );
 void *memset(void *dest, char val, size_t count);
 unsigned short *memsetw(unsigned short *dest, unsigned short val, size_t count);
 int16_t charInStr(char val, char *arr);

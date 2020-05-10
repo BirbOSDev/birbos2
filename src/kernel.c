@@ -79,17 +79,14 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     isrs_install();
     mouse_install();
     outportb(0x70, inportb(0x70) & 0x7F);
-    int _time_boot_ = stopTimer(_boot_timer_);
     //newTask(barTask, 5);
-    int __ret = -1;
-    while(__ret == -1)
-        __ret = newTask(terminalRenderTask, 5);
+    newTask(terminalRenderTask, 3);
     mouseToggleTerminalCursor();
     keyboard_send_key(0xe1);
+    read_rtc();
     print("render failed. please restart your computer.");
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
-    read_rtc();
     initAcpi();
     
    
@@ -97,7 +94,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
 
     //while(1) print(itoa(keyboard_read_key(), 16));
     
-
+    int _time_boot_ = stopTimer(_boot_timer_);
     print("boot took ");
     print(itoa(_time_boot_, 10));
     print("ms");

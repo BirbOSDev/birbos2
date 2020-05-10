@@ -7,6 +7,7 @@ bool __set__ = false;
 int clickTimer = 420;
 bool showMenu = false;
 bool showWeekday = false;
+bool showTestWindow = false;
 
 void drawBox(uint8_t c, uint8_t col, int x, int x2, int y, int y2){
     for(int i = x; i<x2; i++){
@@ -23,7 +24,7 @@ void textAt(char* str, uint8_t col, int x, int wrapx, int y){
     
     for(int i = 0; i<strlen(str); i++){
         if(c >= wrapx){
-            c=0;
+            c=x;
             currx=x;
             wraps++;
         }
@@ -70,7 +71,12 @@ void barRender(){
     if(second<10){
         strcat(data, "0");
     }
+    
     strcat(data, itoa(second,10));
+    strcat(data, "               ");
+    strcat(data, itoa(mouseX, 10));
+    strcat(data, ", ");
+    strcat(data, itoa(mouseY, 10));
 
 	int len = strlen(data);
 	for(int i = len; i < 80 - 6; i++){
@@ -119,11 +125,11 @@ void renderCursor(){
     }
 }
 
-void menuDrawClickableText(char* text, int pos){
-    if(mouseX > 63 && mouseX < 80 && mouseY == pos){
-        textAt(text, 0x87, 63, 80, pos);
+void menuDrawClickableText(char* text, int posx, int maxx, int posy){
+    if(mouseX > posx - 1 && mouseX < maxx && mouseY == posy){
+        textAt(text, 0x87, posx, maxx, posy);
     } else {
-        textAt(text, 0x78, 63, 80, pos);
+        textAt(text, 0x78, posx, maxx, posy);
     }
 }
 
@@ -155,18 +161,34 @@ void terminalRenderTask(int taskno){
     if(showMenu){
         drawBox(219, 0x88, 63, 80, 12, 24);
         textAt("   Start Menu", 0x87, 63, 80, 12);
-        menuDrawClickableText("--[Placeholder]--", 14);
-        menuDrawClickableText("--[Placeholder]--", 15);
-        menuDrawClickableText("--[Placeholder]--", 16);
-        menuDrawClickableText("--[Placeholder]--", 17);
-        menuDrawClickableText("--[Placeholder]--", 18);
-        menuDrawClickableText("--[Placeholder]--", 19);
-        menuDrawClickableText("--[Placeholder]--", 20);
-        menuDrawClickableText("--[Placeholder]--", 21);
-        menuDrawClickableText("--[Placeholder]--", 22);
+        menuDrawClickableText("   Test window   ", 63, 80, 14);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 15);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 16);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 17);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 18);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 19);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 20);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 21);
+        menuDrawClickableText("--[Placeholder]--", 63, 80, 22);
+        if(lmouseDown){
+            if(mouseX > 63 && mouseX < 80 && mouseY == 14 && terminalmousecursor)
+                showTestWindow = true;
+        }
+        
+        
+    }
 
-        
-        
+    if(showTestWindow){
+        drawBox(219, 0x88, 20, 60, 5, 15);
+        drawBox(219, 0x77, 20, 60, 5, 6);
+        menuDrawClickableText("X", 59, 60, 5);
+        textAt("   Title", 0x78, 20, 60, 5);
+        textAt(" BirbOS TUI Test window.", 0x87, 20, 60, 7);
+        textAt(" WRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTESTWRAPTEST", 0x87, 20, 60, 9);
+        if(lmouseDown){
+            if(mouseX > 58 && mouseX < 60 && mouseY == 5 && terminalmousecursor)
+                showTestWindow = false;
+        }
     }
 
     renderCursor();
