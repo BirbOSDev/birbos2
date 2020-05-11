@@ -14,7 +14,7 @@ bool __drag = false;
 int __prevX = 0;
 int __prevY = 0;
 int __grabX = 0;
-int renderdelay = 60;
+int renderdelay = 5;
 
 void drawBox(uint8_t c, uint8_t col, int x, int x2, int y, int y2){
     for(int i = x; i<x2; i++){
@@ -156,9 +156,9 @@ void renderErrorWindow(char* err){
 
 void terminalRenderTask(int taskno){
     removeTask(taskno);
-    memcpy(terminal_buffer, terminal_buffer_layer, sizeof(uint16_t) * 2048);
+    memcpy(terminal_buffer_main, terminal_buffer_layer, 80*25*2);
     
-    barRender();
+    
 
     if(lmouseDown){
         if(mouseX > 73 && mouseX < 80 && mouseY == 24 && terminalmousecursor){
@@ -265,7 +265,10 @@ void terminalRenderTask(int taskno){
         }
     }
 
+    barRender();
+
     renderCursor();
+    memcpy(terminal_buffer, terminal_buffer_main, 80*25*2);
     newTask(terminalRenderTask, renderdelay);
 }
 

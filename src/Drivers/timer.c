@@ -16,6 +16,9 @@ unsigned int timersMsPassed[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 void timer_handler(struct regs *r)
 {
     for(int i = 0; i<64; i++){
+        if(timers[i] != 0){
+            timersMsPassed[i]++;
+        }
         if(tasks[i] != 0){
             if(taskRuns[i] == 0){
                 removeTask(i);
@@ -32,15 +35,11 @@ void timer_handler(struct regs *r)
             
         }
     }
-    for(int i = 0; i<64; i++){
-        if(timers[i] != 0){
-            timersMsPassed[i]++;
-        }
-    }
     timer_ticks++;
     if(timer_ticks % 1000 == 0)
         read_rtc();
     maxrand(rtcGetUnixTimestamp(), INT32_MAX);
+    
     
 
     

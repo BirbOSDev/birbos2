@@ -138,6 +138,7 @@ void fault_handler(struct regs *r)
         textAt(itoa(inportb(0x61), 2), 0x87, 20+25, 20+40, 5+5);
     }
     textAt("system halted", 0x87, 20+1, 20+40, 5+8);
+    memcpy(terminal_buffer, terminal_buffer_main, 80*25*2);
     disable_all_irqs();
     __asm__ __volatile__ ("cli\nhlt");
 }

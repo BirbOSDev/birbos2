@@ -59,7 +59,7 @@ void terminal_initialize(void)
 {
 	terminal_row = 0;
 	terminal_column = 0;
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	terminal_buffer = (uint16_t*)0xB8000;
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
@@ -84,7 +84,7 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 void _terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 {
 	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = vga_entry(c, color);
+	terminal_buffer_main[index] = vga_entry(c, color);
 }
 
 void terminal_putrawentryat(uint16_t entry, size_t x, size_t y)
@@ -96,7 +96,7 @@ void terminal_putrawentryat(uint16_t entry, size_t x, size_t y)
 void _terminal_putrawentryat(uint16_t entry, size_t x, size_t y)
 {
 	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = entry;
+	terminal_buffer_main[index] = entry;
 }
 
 uint16_t terminal_getentryat(size_t x, size_t y){
@@ -107,7 +107,7 @@ uint16_t terminal_getentryat(size_t x, size_t y){
 
 uint16_t _terminal_getentryat(size_t x, size_t y){
 	const size_t index = y * VGA_WIDTH + x;
-	uint16_t data = terminal_buffer[index];
+	uint16_t data = terminal_buffer_main[index];
 	return data;
 }
 
@@ -151,11 +151,11 @@ void terminal_putchar(char c)
         terminal_row = VGA_HEIGHT-1;
         
 	}
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 	
 }
 
-void terminal_putchar(char c)
+void _terminal_putchar(char c)
 {
 	if (c == '\n') {
         terminal_row++;
@@ -176,7 +176,7 @@ void terminal_putchar(char c)
         terminal_row = VGA_HEIGHT-1;
         
 	}
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 	
 }
 
@@ -202,7 +202,7 @@ void terminal_putcharnoex(char c)
         terminal_row = 0;
         terminal_scroll();
 	}
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 }
 void terminal_putcharbehind(char c)
 {
@@ -217,7 +217,7 @@ void terminal_putcharbehind(char c)
 		if (--terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 }
 
 void print(const char* data)
@@ -297,7 +297,7 @@ void print_at(const char* data, int tx, int ty)
 	print(data);
 	terminal_row = oldr;
 	terminal_column = oldc;
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 }
 
 void print_at_c(const char* data, int tx, int ty, uint8_t color)
@@ -311,7 +311,7 @@ void print_at_c(const char* data, int tx, int ty, uint8_t color)
 	terminal_row = oldr;
 	terminal_column = oldc;
 	terminal_color = oldcl;
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 }
 
 void print_c(const char* data, uint8_t color)
@@ -320,7 +320,7 @@ void print_c(const char* data, uint8_t color)
 	terminal_color = color;
 	print(data);
 	terminal_color = oldc;
-	update_cursor(terminal_column, terminal_row);
+	//update_cursor(terminal_column, terminal_row);
 }
 
 void drawSprite(int px, int py, int sy, int sx, int sprite[][sx], int scale){

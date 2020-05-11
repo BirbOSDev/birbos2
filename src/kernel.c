@@ -83,7 +83,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     mouse_install();
     outportb(0x70, inportb(0x70) & 0x7F);
     //newTask(barTask, 5);
-    int rendertaskno = newTask(terminalRenderTask, renderdelay);
+    newTask(terminalRenderTask, renderdelay);
     mouseToggleTerminalCursor();
     keyboard_send_key(0xe1);
     read_rtc();
@@ -91,6 +91,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
     initAcpi();
+    outportb(0x3D4, 0x0A);
+	outportb(0x3D5, 0x20);
     
    
     // disable blinking bit and use it for background
@@ -110,14 +112,6 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print(itoa(_time_boot_, 10));
     print("ms");
     print("\n\n");
-    terminal_setcolor(0x4F);
-    print("!experimental TUI version!\n");
-    terminal_setcolor(0x07);
-    print("if you have any rendering problems, \n");
-    print("try adjusting the rate using the 'renderdelay' command.\n");
-    print("use what works best, but 33ms or 20ms might work the best.\n");
-    print("scanlines are pretty much unavoidable on a real machine.\n\n");
-    //newTask(taskTest, 1000);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
     
     while(true){

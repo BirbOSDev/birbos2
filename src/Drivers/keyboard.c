@@ -38,6 +38,7 @@ void waitForACK(){
 
 
 void keyboardIRQHandler(struct regs *r){
+    rand();
     _keyboardirq = 1;
     //print("key");
 }
