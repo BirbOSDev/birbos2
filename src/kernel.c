@@ -90,7 +90,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print("render failed. please restart your computer.");
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
-    set_text_mode(4);
+    set_text_mode(-1);
     initAcpi();
     outportb(0x3D4, 0x0A);
 	outportb(0x3D5, 0x20);
@@ -210,12 +210,15 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             terminal_initialize();
         }
         else if(strequ(cmd,"videomode")){
+            terminal_setcolor(0x47);
+            print("this is an experimental feature. it might not work on all machines.\n\n");
+            terminal_setcolor(0x07);
             print("Available modes:\n");
             print("(0) 40x25 UNSUPPORTED\n");
             print("(1) 40x50 UNSUPPORTED\n");
-            print("(2) 80x25\n");
+            print("(2) 80x25 DEFAULT\n");
             print("(3) 80x50\n");
-            print("(4) 90x30 DEFAULT\n");
+            print("(4) 90x30\n");
             print("(5) 90x60\n");
             print("Select mode: ");
             set_text_mode(atoi(input(), 10));

@@ -1191,17 +1191,7 @@ void set_text_mode(int res)
 		write_font(g_8x16_font, 16);
 	else
 		write_font(g_8x8_font, 8);
-/* tell the BIOS what we've done, so BIOS text output works OK */
-	pokew(0x40, 0x4A, VGA_WIDTH);	/* columns on screen */
-	pokew(0x40, 0x4C, VGA_WIDTH * VGA_HEIGHT * 2); /* framebuffer size */
-	pokew(0x40, 0x50, 0);		/* cursor pos'n */
-	pokeb(0x40, 0x60, ht - 1);	/* cursor shape */
-	pokeb(0x40, 0x61, ht - 2);
-	pokeb(0x40, 0x84, VGA_HEIGHT - 1);	/* rows on screen - 1 */
-	pokeb(0x40, 0x85, ht);		/* char height */
-/* set white-on-black attributes for all text */
-	for(i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++)
-		pokeb(0xB800, i * 2 + 1, 7);
+
 }
 
 /*****************************************************************************

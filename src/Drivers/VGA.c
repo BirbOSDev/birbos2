@@ -66,11 +66,36 @@ void terminal_initialize(void)
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	outportb(0x3D4, 0x0A);
 	outportb(0x3D5, 0x20);
+	inportb(0x3DA);
+    outportb(0x3C0, 0x30);
+    //int _ = inportb(0x3C1);
+    outportb(0x3C0, 0b00010100);
 	terminal_buffer = (uint16_t*)0xB8000;
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
 			terminal_buffer_layer[index] = vga_entry(' ', terminal_color);
+		}
+	}
+}
+
+void _terminal_initialize(void)
+{
+	terminal_row = 0;
+	terminal_column = 0;
+	//update_cursor(terminal_column, terminal_row);
+	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	outportb(0x3D4, 0x0A);
+	outportb(0x3D5, 0x20);
+	inportb(0x3DA);
+    outportb(0x3C0, 0x30);
+    //int _ = inportb(0x3C1);
+    outportb(0x3C0, 0b00010100);
+	terminal_buffer = (uint16_t*)0xB8000;
+	for (size_t y = 0; y < VGA_HEIGHT; y++) {
+		for (size_t x = 0; x < VGA_WIDTH; x++) {
+			const size_t index = y * VGA_WIDTH + x;
+			terminal_buffer_main[index] = vga_entry(' ', terminal_color);
 		}
 	}
 }
