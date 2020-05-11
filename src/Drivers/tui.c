@@ -8,8 +8,6 @@ int clickTimer = 420;
 bool showMenu = false;
 bool showWeekday = false;
 bool showTestWindow = false;
-int testWindowX = 20;
-int testWindowY = 5;
 bool __drag = false;
 int __prevX = 0;
 int __prevY = 0;
@@ -50,7 +48,7 @@ void barRender(){
     if(!barEnabled)
 		return;
     
-	char data[80] = " ";
+	char data[90] = " ";
     if(showWeekday){
 	    switch(weekday){
             case 1: strcat(data, "Sunday "); break;
@@ -90,21 +88,21 @@ void barRender(){
     strcat(data, itoa(mouseY, 10));
 
 	int len = strlen(data);
-	for(int i = len; i < 80 - 6; i++){
+	for(int i = len; i < VGA_WIDTH - 6; i++){
 		data[i] = ' ';
 	}
     for (size_t i = 0; i < strlen(data); i++){
-        terminal_putentryat(data[i], 0x87, i, 24);
+        terminal_putentryat(data[i], 0x87, i, VGA_HEIGHT);
     }
     len = strlen(data);
 	strcat(data, "birbOS");
-    if(mouseX > 73 && mouseX < 80 && mouseY == 24 && terminalmousecursor){
+    if(mouseX > VGA_WIDTH-7 && mouseX < VGA_WIDTH && mouseY == VGA_HEIGHT && terminalmousecursor){
         for (size_t i = len; i < strlen(data); i++){
-            terminal_putentryat(data[i], 0x87, i, 24);
+            terminal_putentryat(data[i], 0x87, i, VGA_HEIGHT);
         }
     } else {
         for (size_t i = len; i < strlen(data); i++){
-            terminal_putentryat(data[i], 0x78, i, 24);
+            terminal_putentryat(data[i], 0x78, i, VGA_HEIGHT);
         }
     }
 	
@@ -146,22 +144,22 @@ void menuDrawClickableText(char* text, int posx, int maxx, int posy){
 
 
 void renderErrorWindow(char* err){
-    drawBox(219, 0x88, 20, 20+40, 5, 5+10);
-    drawBox(219, 0x77, 20, 20+40, 5, 5+1);
-    menuDrawClickableText("X", 20+39, 20+40, 5);
-    textAt("   ERROR", 0x78, 20, 20+40, 5);
-    textAt(err, 0x87, 20+1, 20+40, 5+2);
+    drawBox(219, 0x88, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5, VGA_HEIGHT/5+10);
+    drawBox(219, 0x77, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5, VGA_HEIGHT/5+1);
+    menuDrawClickableText("X", VGA_WIDTH/4+39, VGA_WIDTH/4+40, VGA_HEIGHT/5);
+    textAt("   ERROR", 0x78, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5);
+    textAt(err, 0x87, VGA_WIDTH/4+1, VGA_WIDTH/4+40, VGA_HEIGHT/5+2);
 }
 
 
 void terminalRenderTask(int taskno){
     removeTask(taskno);
-    memcpy(terminal_buffer_main, terminal_buffer_layer, 80*25*2);
+    memcpy(terminal_buffer_main, terminal_buffer_layer, VGA_WIDTH*(VGA_HEIGHT+1)*2);
     
     
 
     if(lmouseDown){
-        if(mouseX > 73 && mouseX < 80 && mouseY == 24 && terminalmousecursor){
+        if(mouseX > VGA_WIDTH-7 && mouseX < VGA_WIDTH && mouseY == VGA_HEIGHT && terminalmousecursor){
             int ret = stopTimer(clickTimer);
             if(ret > 50 + renderdelay || ret == -2){
                 if(showMenu){
@@ -173,34 +171,32 @@ void terminalRenderTask(int taskno){
             }
             clickTimer = startTimer();
         }
-        if((mouseY < 12 || (mouseX < 63 && mouseY < 24))){
+        if((mouseY < VGA_HEIGHT-13 || (mouseX < VGA_WIDTH-17 && mouseY <  VGA_HEIGHT))){
             if(showMenu){
                 showMenu = false;
             }
         }
     }
     if(showMenu){
-        drawBox(219, 0x88, 63, 80, 12, 24);
-        textAt("   Start Menu", 0x87, 63, 80, 12);
-        menuDrawClickableText("   Test window   ", 63, 80, 14);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 15);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 16);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 17);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 18);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 19);
-        menuDrawClickableText("--[Placeholder]--", 63, 80, 20);
-        menuDrawClickableText("     Reboot      ", 63, 80, 21);
-        menuDrawClickableText("    Shutdown     ", 63, 80, 22);
+        drawBox(219, 0x88, VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-13, VGA_HEIGHT);
+        textAt("   Start Menu", 0x87, VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-13);
+        menuDrawClickableText("   Test window   ", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-11);
+        menuDrawClickableText("--[Placeholder]--", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-10);
+        menuDrawClickableText("--[Placeholder]--", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-9);
+        menuDrawClickableText("--[Placeholder]--", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-8);
+        menuDrawClickableText("--[Placeholder]--", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-7);
+        menuDrawClickableText("--[Placeholder]--", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-6);
+        menuDrawClickableText("--[Placeholder]--", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-5);
+        menuDrawClickableText("     Reboot      ", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-4);
+        menuDrawClickableText("    Shutdown     ", VGA_WIDTH-17, VGA_WIDTH, VGA_HEIGHT-3);
         if(lmouseDown){
             int ret = stopTimer(clickTimer);
             if(ret > 50 + renderdelay || ret == -2){
-                if(mouseX > 63 && mouseX < 80 && mouseY == 14 && terminalmousecursor){
+                if(mouseX > VGA_WIDTH-17 && mouseX < VGA_WIDTH && mouseY == VGA_HEIGHT-11 && terminalmousecursor){
                     showMenu = false;
                     showTestWindow = true;
-                    testWindowX = 20;
-                    testWindowY = 5;
                 }
-                if(mouseX > 63 && mouseX < 80 && mouseY == 21 && terminalmousecursor){
+                if(mouseX > VGA_WIDTH-17 && mouseX < VGA_WIDTH && mouseY == VGA_HEIGHT-4 && terminalmousecursor){
                     showMenu = false;
                     uint8_t good = 0x02;
                     while (good & 0x02)
@@ -208,7 +204,7 @@ void terminalRenderTask(int taskno){
                     outportb(0x64, 0xFE);
                     asm("hlt");
                 }
-                if(mouseX > 63 && mouseX < 80 && mouseY == 22 && terminalmousecursor){
+                if(mouseX > VGA_WIDTH-17 && mouseX < VGA_WIDTH && mouseY == VGA_HEIGHT-3 && terminalmousecursor){
                     showMenu = false;
                     acpiPowerOff();
                     
@@ -222,16 +218,16 @@ void terminalRenderTask(int taskno){
     }
 
     if(showTestWindow){
-        drawBox(219, 0x88, testWindowX, testWindowX+40, testWindowY, testWindowY+10);
-        drawBox(219, 0x77, testWindowX, testWindowX+40, testWindowY, testWindowY+1);
-        menuDrawClickableText("X", testWindowX+39, testWindowX+40, testWindowY);
-        textAt("   Title", 0x78, testWindowX, testWindowX+40, testWindowY);
-        textAt(" xandrei was here", 0x87, testWindowX, testWindowX+40, testWindowY+2);
-        textAt(" mori in foc", 0x87, testWindowX, testWindowX+40, testWindowY+4);
+        drawBox(219, 0x88, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5, VGA_HEIGHT/5+10);
+        drawBox(219, 0x77, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5, VGA_HEIGHT/5+1);
+        menuDrawClickableText("X", VGA_WIDTH/4+39, VGA_WIDTH/4+40, VGA_HEIGHT/5);
+        textAt("   Title", 0x78, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5);
+        textAt(" xandrei was here", 0x87, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5+2);
+        textAt(" mori in foc", 0x87, VGA_WIDTH/4, VGA_WIDTH/4+40, VGA_HEIGHT/5+4);
         if(lmouseDown){
             int ret = stopTimer(clickTimer);
             if(ret > 50 + renderdelay || ret == -2){
-                if(mouseX > testWindowX+38 && mouseX < testWindowX+40 && mouseY == testWindowY && terminalmousecursor)
+                if(mouseX > VGA_WIDTH/4+38 && mouseX < VGA_WIDTH/4+40 && mouseY == VGA_HEIGHT/5 && terminalmousecursor)
                     showTestWindow = false;
             }
             clickTimer = startTimer();
@@ -268,7 +264,7 @@ void terminalRenderTask(int taskno){
     barRender();
 
     renderCursor();
-    memcpy(terminal_buffer, terminal_buffer_main, 80*25*2);
+    memcpy(terminal_buffer, terminal_buffer_main, VGA_WIDTH*(VGA_HEIGHT+1)*2);
     newTask(terminalRenderTask, renderdelay);
 }
 

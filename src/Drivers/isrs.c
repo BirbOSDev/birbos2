@@ -132,13 +132,13 @@ void fault_handler(struct regs *r)
     showMenu = false;
     renderErrorWindow(exception_messages[r->int_no]);
     if(r->int_no == 2){
-        textAt("system control port a:", 0x87, 20+1, 20+40, 5+4);
-        textAt(itoa(inportb(0x92), 2), 0x87, 20+25, 20+40, 5+4);
-        textAt("system control port b:", 0x87, 20+1, 20+40, 5+5);
-        textAt(itoa(inportb(0x61), 2), 0x87, 20+25, 20+40, 5+5);
+        textAt("system control port a:", 0x87, VGA_WIDTH/4+1, VGA_WIDTH/4+40, VGA_HEIGHT/+4);
+        textAt(itoa(inportb(0x92), 2), 0x87, VGA_WIDTH/4+25, VGA_WIDTH/4+40, VGA_HEIGHT/+4);
+        textAt("system control port b:", 0x87, VGA_WIDTH/4+1, VGA_WIDTH/4+40, VGA_HEIGHT/+5);
+        textAt(itoa(inportb(0x61), 2), 0x87, VGA_WIDTH/4+25, VGA_WIDTH/4+40, VGA_HEIGHT/+5);
     }
-    textAt("system halted", 0x87, 20+1, 20+40, 5+8);
-    memcpy(terminal_buffer, terminal_buffer_main, 80*25*2);
+    textAt("system halted", 0x87, VGA_WIDTH/4+1, VGA_WIDTH/4+40, VGA_HEIGHT/5+8);
+    memcpy(terminal_buffer, terminal_buffer_main, VGA_WIDTH*(VGA_HEIGHT+1)*2);
     disable_all_irqs();
     __asm__ __volatile__ ("cli\nhlt");
 }

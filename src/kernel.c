@@ -90,6 +90,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print("render failed. please restart your computer.");
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
+    set_text_mode(4);
     initAcpi();
     outportb(0x3D4, 0x0A);
 	outportb(0x3D5, 0x20);
@@ -202,9 +203,22 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ncursor      : Toggles the mouse cursor (note that it can break while scrolling)");
             print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
             print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
+            print("\nvideomode   : Change text mode resolution");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
+            terminal_initialize();
+        }
+        else if(strequ(cmd,"videomode")){
+            print("Available modes:\n");
+            print("(0) 40x25 UNSUPPORTED\n");
+            print("(1) 40x50 UNSUPPORTED\n");
+            print("(2) 80x25\n");
+            print("(3) 80x50\n");
+            print("(4) 90x30 DEFAULT\n");
+            print("(5) 90x60\n");
+            print("Select mode: ");
+            set_text_mode(atoi(input(), 10));
             terminal_initialize();
         }
         else if(strequ(cmd,"sensitivity")){
