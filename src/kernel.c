@@ -200,6 +200,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ndie         : Halts the system");
             print("\ntime        : Shows the time from RTC");
             print("\nrand        : Returns a random number");
+            print("\nguess-game  : guess-game");
             print("\ncursor      : Toggles the mouse cursor (note that it can break while scrolling)");
             print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
             print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
@@ -208,6 +209,26 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         }
         else if(strequ(cmd,"clear")){
             terminal_initialize();
+        }
+        else if(strequ(cmd,"guess-game")){
+
+            print("Guess birb's number (0-30000)\n\n");
+            int randno = randomInt(30000);
+            int guess = 0;
+            while(true){
+                print("guess-game>");
+                guess = atoi(input(),10);
+                print("\n");
+                if(guess == randno){
+                    print_c("yay you found it.\n\n", VGA_COLOR_LIGHT_GREEN);
+                    break;
+                } else if(guess > randno){
+                    print_c("go loWER", VGA_COLOR_RED);
+                } else if(guess < randno){
+                    print_c("GO HIgHER", VGA_COLOR_RED);
+                }
+                print("\n");
+            }
         }
         else if(strequ(cmd,"videomode")){
             terminal_setcolor(0x47);

@@ -232,29 +232,8 @@ void terminalRenderTask(int taskno){
             }
             clickTimer = startTimer();
             
-            /*
-            if(mouseX >= testWindowX && mouseX <= testWindowX+37 && mouseY == testWindowY && terminalmousecursor){
-                __drag = true;
-                __prevX = mouseX;
-                __prevY = mouseY;
-                __grabX = mouseX - testWindowX;
-            }
-            if((__prevX != mouseX || __prevY != mouseY) && __drag){
-                __drag = false;
-                __prevX = mouseX;
-                __prevY = mouseY;
-                testWindowY = mouseY;
-                print(itoa(__grabX, 10));
-                print("  ");
-
-                testWindowX = mouseX - __grabX;
-                testWindowX = mouseX;
-                if(testWindowX+40 > 80){
-                    testWindowX = 40;
-                }
-                
-            }
-            */
+            
+            
             
             
             
