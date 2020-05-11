@@ -131,7 +131,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             itoa(1/0, 1/0);
         }
         if(strequ(cmd, "renderdelay")){
-            print("\nInsert delay in MS (default is 60ms): ");
+            print("\nInsert delay in milliseconds (default is 1ms): ");
             renderdelay = atoi(input(), 10);
             print("\n");
         }

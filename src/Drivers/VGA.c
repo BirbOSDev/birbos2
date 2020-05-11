@@ -143,10 +143,6 @@ uint16_t _terminal_getentryat(size_t x, size_t y){
 
 void terminal_scroll(){
 	terminalScrolling = true;
-	char* data = "                                                                                ";
-    for (size_t i = 0; i < strlen(data); i++){
-        terminal_putentryat(data[i], 0x00, i, 24);
-    }
     for(int i = 0; i < VGA_HEIGHT; i++){
         for (int m = 0; m < VGA_WIDTH; m++){
             terminal_buffer_layer[i * VGA_WIDTH + m] = terminal_buffer_layer[(i + 1) * VGA_WIDTH + m];

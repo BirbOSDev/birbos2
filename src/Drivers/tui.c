@@ -92,17 +92,17 @@ void barRender(){
 		data[i] = ' ';
 	}
     for (size_t i = 0; i < strlen(data); i++){
-        terminal_putentryat(data[i], 0x87, i, VGA_HEIGHT);
+        _terminal_putentryat(data[i], 0x87, i, VGA_HEIGHT);
     }
     len = strlen(data);
 	strcat(data, "birbOS");
     if(mouseX > VGA_WIDTH-7 && mouseX < VGA_WIDTH && mouseY == VGA_HEIGHT && terminalmousecursor){
         for (size_t i = len; i < strlen(data); i++){
-            terminal_putentryat(data[i], 0x87, i, VGA_HEIGHT);
+            _terminal_putentryat(data[i], 0x87, i, VGA_HEIGHT);
         }
     } else {
         for (size_t i = len; i < strlen(data); i++){
-            terminal_putentryat(data[i], 0x78, i, VGA_HEIGHT);
+            _terminal_putentryat(data[i], 0x78, i, VGA_HEIGHT);
         }
     }
 	
