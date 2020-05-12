@@ -64,6 +64,42 @@ void loadingTask(){
     print("| loading"); for(int i = 0; i < 65535*255; i++) {} terminal_initialize();
 }
 
+char birb_ascii[40][72] = {
+"00000OOkkkkkkkkkkkkkkkxxxxxxxxddddxxxxxxxxxxxxxxxk\n",
+"00000OOOOkkkkkxxooc::::::clloddddddxxxxxddddddddxx\n",
+"0000000OOkkkxl;'.....'',,;;;:cc:lodxxxxxddddddddxx\n",
+"K0000000OOx:'.......'''',,,;;;:::::lodxxdddddddxxx\n",
+"KKKKKK00Ol'.........''''''',,,;;;;;:lodxxxxxdxxxxx\n",
+"KKKKKKKx,....................',,;;;::clodxxxxxxxxx\n",
+"0Oxddol'......................',;;::::::lxxxxkkxkk\n",
+",,''''''...................'''',,,;;::::;lkkkkkkkk\n",
+"'''''.....................'''',,,',,;:::;;xkkkkkkk\n",
+"'''''........................''',,,,,:::;;ckOOOOOO\n",
+"..'...'.......................'';clo:;;:;;;O000000\n",
+"..'..'''.......'dc'............':ccxx:;;;,;00000KK\n",
+".''..'''.......lo'''............,:ccdx:'.'oKKKKKKK\n",
+"''.....''......o;..:'...........':cc:dd'..dXXXXXXX\n",
+"...............cc..c,..........;:c:lc:dc..cKXXXXXX\n",
+"...............'birb..........,;:::cc::o''oxXXNNNN\n",
+".................,,..      ..'',;;;,;;;:ox::0XNNNN\n",
+"................................'''',,,,c:',oXXNNX\n",
+"'................. .    ......'''....',,,:,,cXXNXX\n",
+"...........................'''''',,'..''':,,cKXXXN\n",
+".........................'''''''..'''''..;,,:KXXXX\n",
+"..........................''.............;',;0KXXX\n",
+"........................................''''c0KKKX\n",
+"........................................'..'c000KK\n",
+"............................. .............':O0000\n",
+".............................  ............':kOOOO\n",
+"................................ ..........':kOOOO\n",
+"............................................;xkkkk\n",
+"...........................................',lxkkk\n",
+"...........................................',:okkk\n",
+"..............................  ...........'';cdxx\n",
+".............................      .........'':oxx\n",
+"..............................     ...........,cdx\n",
+"lllcccccccccccccccccccccc::c::::::cccccclllllloxOO\n",
+"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"};
 
 
 
@@ -90,7 +126,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print("render failed. please restart your computer.");
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
-    set_text_mode(-1);
+    set_text_mode(3);
     initAcpi();
     outportb(0x3D4, 0x0A);
 	outportb(0x3D5, 0x20);
@@ -101,7 +137,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     outportb(0x3C0, 0x30);
     //int _ = inportb(0x3C1);
     outportb(0x3C0, 0b00010100);
-
+    sleep(50);
     //
     
     //print(itoa(mbi->mem_upper, 10));
@@ -113,6 +149,11 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print(itoa(_time_boot_, 10));
     print("ms");
     print("\n\n");
+    terminal_setcolor(0x08);
+    for(int i = 0; i<40; i++){
+        print(birb_ascii[i]);
+    }
+    terminal_setcolor(0x07);
     print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
     
     while(true){
