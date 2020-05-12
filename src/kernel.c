@@ -217,7 +217,18 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             int guess = 0;
             while(true){
                 print("guess-game>");
-                guess = atoi(input(),10);
+                char* in = input();
+                guess = atoi(in,10);
+                if(strequ(in, "exit")){
+                    print("\n");
+                    break;
+                }
+                if(strequ(in, "birb")){
+                    print("\nNumber is ");
+                    print(itoa(randno, 10));
+                    print("\n");
+                    continue;
+                }
                 print("\n");
                 if(guess == randno){
                     print_c("yay you found it.\n\n", VGA_COLOR_LIGHT_GREEN);
