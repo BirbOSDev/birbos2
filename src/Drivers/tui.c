@@ -130,7 +130,14 @@ void renderCursor(){
         dcolor = setUpperNibble(dcolor, nibble);
         dcolor = setLowerNibble(dcolor, inverted);
 
+        if(lmouseDown){
+            _mc = 254;
+        } else {
+            _mc = 30;
+        }
         _terminal_putentryat(_mc, dcolor, mouseX, mouseY);
+
+        
     }
 }
 

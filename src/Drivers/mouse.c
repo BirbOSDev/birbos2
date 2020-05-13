@@ -55,14 +55,18 @@ void handleDoubleClick(uint8_t key) {
 }
 
 void handleMouse() {
+  
   _mouseIRQ = true;
 	switch(mouseCycle) {
 	case 0: {
 		mouseByte[0] = mouse_read();
+    srand(mouseByte[0]);
+    rand();
 		if((mouseByte[0] & 0x08) != 0) {
 			mouseCycle++; // Only accept this as the first byte if the "must be 1" bit is set
 		}
 		//mouseCycle++;
+
 		break;
 	};
 	case 1: {
@@ -106,8 +110,10 @@ void handleMouse() {
       mouseX = highmouseX / sensitivity;
       mouseY = highmouseY / (sensitivity+1);
   
-    
-
+      srand(highmouseX);
+      rand();
+      srand(highmouseY);
+      rand();
 
     
 

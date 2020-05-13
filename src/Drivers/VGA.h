@@ -28,6 +28,7 @@ int VGA_HEIGHT;
 
 uint8_t* screen;
 unsigned int terminal_row;
+uint8_t terminal_color;
 unsigned int terminal_column;
 uint16_t* terminal_buffer;
 bool terminalScrolling;

@@ -60,8 +60,13 @@ uint8_t input_key(){
 }
 char input_char(){
     uint8_t key;
-    keyboardWaitForIRQ();
-    key = keyboard_read_key();
+    while(1){
+        keyboardWaitForIRQ();
+        key = keyboard_read_key();
+        if(key != 0x9c){
+            break;
+        }
+    }
     return ktoc(key);
 }
 char input_char_shift(){

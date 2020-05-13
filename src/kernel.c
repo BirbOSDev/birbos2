@@ -10,6 +10,8 @@ void * malloc(int nbytes){
 	return &variable;
 }
 
+uint16_t buffer[90*60*2];
+
 void int_to_ascii(int n, char str[]) {          
     int i, sign;
     if ((sign = n) < 0) n = -n;
@@ -168,10 +170,43 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\n");
             
         }
-        if(strequ(cmd, "crash")){
+        else if(strequ(cmd, "crash")){
             itoa(1/0, 1/0);
         }
-        if(strequ(cmd, "renderdelay")){
+        else if(strequ(cmd, "view-rnd")){
+            print_c("EPILEPSY WARNING!\n\n", 0x4F);
+            print("Continue? [y/n] ");
+            char e = input_char();
+            if(e == 'Y' || e == 'y'){
+                uint8_t key = 0;
+            
+                while(true){
+                    key = old_keyboard_read_key();
+                    if(key == 0x1){
+                        break;
+                    }
+                    for(int i = 0; i<48; i++){
+                        for(int j = 0; j<79; j++){
+                            const size_t index = i * VGA_WIDTH + j;
+	                        buffer[index] = vga_entry(' ', 0x08);
+                        }
+                    }
+                    for(int i = 0; i<48; i++){
+                        for(int j = 0; j<79; j++){
+                            if(randomInt(16) == 1){
+                                const size_t index = i * VGA_WIDTH + j;
+	                        buffer[index] = vga_entry('#', 0x08);
+                            }
+                        }
+                    }
+                    memcpy(terminal_buffer_layer, buffer, 90*60*2);
+                }
+            }
+            print("\n");
+
+            
+        }
+        else if(strequ(cmd, "renderdelay")){
             print("\nInsert delay in milliseconds (default is 1ms): ");
             renderdelay = atoi(input(), 10);
             print("\n");
@@ -246,10 +281,15 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
             print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
             print("\nvideomode   : Change text mode resolution");
+            print("\nview-rnd    : Observe our current (shitty) RNG.");
+            print("\ncookieclk   : Cookie clicker thingy.");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
             terminal_initialize();
+        }
+        else if(strequ(cmd,"cookieclk")){
+            CookieClickerGame();
         }
         else if(strequ(cmd,"guess-game")){
 
@@ -289,8 +329,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("Available modes:\n");
             print("(0) 40x25 UNSUPPORTED\n");
             print("(1) 40x50 UNSUPPORTED\n");
-            print("(2) 80x25 DEFAULT\n");
-            print("(3) 80x50\n");
+            print("(2) 80x25\n");
+            print("(3) 80x50 DEFAULT\n");
             print("(4) 90x30\n");
             print("(5) 90x60\n");
             print("Select mode: ");

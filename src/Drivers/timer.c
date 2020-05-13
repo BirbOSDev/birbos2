@@ -36,9 +36,11 @@ void timer_handler(struct regs *r)
         }
     }
     timer_ticks++;
-    if(timer_ticks % 1000 == 0)
+    if(timer_ticks % 1000 == 0){
         read_rtc();
-    maxrand(rtcGetUnixTimestamp(), INT32_MAX);
+        //maxrand(rtcGetUnixTimestamp(), INT32_MAX);
+    }
+    maxrand(timer_ticks ^ rtcGetUnixTimestamp(), INT32_MAX);
     
     
 

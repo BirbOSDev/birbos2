@@ -34,11 +34,13 @@ void fillrect(int px, int py, int sx, int sy, int color) {
 
 inline uint8_t vga_entry_color(uint8_t fg, uint8_t bg)
 {
+	rand();
 	return fg | bg << 4;
 }
 
 inline uint16_t vga_entry(unsigned char uc, uint8_t color)
 {
+	rand();
 	return (uint16_t)uc | (uint16_t)color << 8;
 }
 
