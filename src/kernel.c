@@ -269,6 +269,9 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             }
         }
         else if(strequ(cmd,"help")){
+            terminal_setcolor(VGA_COLOR_GREEN);
+            print("\n-----MISC COMMANDS-----\n");
+            terminal_setcolor(VGA_COLOR_LIGHT_GREY);
             print("\nclear       : Clears the screen");
             print("\necho        : Takes input text reprint a given text");
             print("\nabout       : Shows details of the OS");
@@ -281,7 +284,10 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             print("\ncpuvendor   : Get the 12 character vendor string from CPUID");
             print("\nsensitivity : Set mouse sensitivity (higher number - lower sensitivity)");
             print("\nvideomode   : Change text mode resolution");
-            print("\nview-rnd    : Observe our current (shitty) RNG.");
+            print("\nview-rnd    : Observe our current (shitty) RNG.\n");
+            terminal_setcolor(VGA_COLOR_GREEN);
+            print("\n-----GAMES-----\n");
+            terminal_setcolor(VGA_COLOR_LIGHT_GREY);
             print("\ncookieclk   : Cookie clicker thingy.");
             print("\n\n");
         }
