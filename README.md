@@ -4,4 +4,11 @@ qemu
 
 
 
-after installing above run bash comp.sh
+after do ./comp.sh
+
+
+
+
+
+
+birbOS run.......
