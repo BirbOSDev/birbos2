@@ -78,16 +78,16 @@ void CookieClickerGame(){
         print_at("Clicks: ", 8*2, 18);
         print_at("          ", 8*3, 18); // clear
         print_at(itoa(clicks, 10), 8*3, 18);
-        print_at("Clk/3s: ", 8*2, 19);
+        print_at("CPS   : ", 8*2, 19);
         print_at("          ", 8*3, 19); // clear
         print_at(itoa(cps, 10), 8*3, 19);
         print_at("don't take this as a serious game. "
                 "take it as a CPS counter", 0, 22);
         print_at("press ESC to exit.", 0, 24);
         
-        if(getTimerMs(_timer) >= 3000){
+        if(getTimerMs(_timer) >= 1000){
             stopTimer(_timer);
-            cps = oldclicks/3;
+            cps = oldclicks/1;
             oldclicks = 0;
             _timer = startTimer();
         }
