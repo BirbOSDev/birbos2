@@ -132,10 +132,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     
    
     // disable blinking bit and use it for background
-    inportb(0x3DA);
-    outportb(0x3C0, 0x30);
-    //int _ = inportb(0x3C1);
-    outportb(0x3C0, 0b00010100);
+    
 
     sleep(50);
     terminal_initialize();
@@ -143,6 +140,11 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     set_text_mode(3);
     outportb(0x3D4, 0x0A);
 	outportb(0x3D5, 0x20);
+
+    inportb(0x3DA);
+    outportb(0x3C0, 0x30);
+    //int _ = inportb(0x3C1);
+    outportb(0x3C0, 0b00010100);
     //
     
     //print(itoa(mbi->mem_upper, 10));
