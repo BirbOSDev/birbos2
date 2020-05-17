@@ -161,11 +161,12 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         print(birb_ascii[i]);
     }
     terminal_setcolor(0x07);
-    print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_GREEN);
+    print_c("Welcome to BirbOS!\n",VGA_COLOR_LIGHT_BLUE);
     
     while(true){
-        print("birb>");
+        print_c("birb>", VGA_COLOR_LIGHT_GREEN);
         char* cmd = input();
+        
         print("\n");
         if(strequ(cmd, "echo")){
             print("Enter string:\n");
@@ -190,23 +191,24 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
                     if(key == 0x1){
                         break;
                     }
-                    for(int i = 0; i<48; i++){
-                        for(int j = 0; j<79; j++){
+                    for(int i = 0; i<VGA_HEIGHT-1; i++){
+                        for(int j = 0; j<VGA_WIDTH-1; j++){
                             const size_t index = i * VGA_WIDTH + j;
-	                        buffer[index] = vga_entry(' ', 0x08);
+	                        buffer[index] = vga_entry(' ', 0);
                         }
                     }
-                    for(int i = 0; i<48; i++){
-                        for(int j = 0; j<79; j++){
+                    for(int i = 0; i<VGA_HEIGHT-1; i++){
+                        for(int j = 0; j<VGA_WIDTH-1; j++){
                             if(randomInt(16) == 1){
                                 const size_t index = i * VGA_WIDTH + j;
-	                        buffer[index] = vga_entry('#', 0x08);
+	                        buffer[index] = vga_entry(randomInt(255), randomInt(255));
                             }
                         }
                     }
                     memcpy(terminal_buffer_layer, buffer, 90*60*2);
                 }
             }
+            terminal_initialize();
             print("\n");
 
             
