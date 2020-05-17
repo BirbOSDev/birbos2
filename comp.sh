@@ -17,9 +17,9 @@ i686-elf-gcc -w -c src/Drivers/rtc.c -o debug/rtc.o -std=gnu99 -m32 -ffreestandi
 i686-elf-gcc -w -c src/Drivers/tui.c -o debug/tui.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
 i686-elf-gcc -w -c src/Drivers/videomode.c -o debug/videomode.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
 i686-elf-gcc -w -c src/Games/cookieclk.c -o debug/cookieclk.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+i686-elf-gcc -w -c src/Games/paint.c -o debug/paint.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
 
-
-i686-elf-ld -T src/linker.ld -o debug/kernel.elf debug/boot.o debug/kernel.o debug/irq.o debug/idt.o debug/timer.o debug/gdt.o debug/isrs.o debug/common.o debug/keyboard.o debug/VGA.o debug/sound.o debug/acpi.o debug/mouse.o debug/rtc.o debug/tui.o debug/videomode.o debug/cookieclk.o
+i686-elf-ld -T src/linker.ld -o debug/kernel.elf debug/boot.o debug/kernel.o debug/irq.o debug/idt.o debug/timer.o debug/gdt.o debug/isrs.o debug/common.o debug/keyboard.o debug/VGA.o debug/sound.o debug/acpi.o debug/mouse.o debug/rtc.o debug/tui.o debug/videomode.o debug/cookieclk.o debug/paint.o
 
 sh makegrub.sh
 qemu-system-i386 BirbOS.iso -serial file:serial.log

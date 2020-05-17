@@ -13,6 +13,7 @@ bool terminalmousecursor = false;
 bool lmouseDown = false;
 bool rmouseDown = false;
 bool mmouseDown = false;
+bool handledDown = false;
 int mouseTimer = 420;
 
 unsigned char lcolor = 0x01;
@@ -30,8 +31,10 @@ void handleMouseDown(uint8_t key) {
   if(key == 0){
     int ret = stopTimer(mouseTimer);
     if(ret < 300){
-      if(ret != -1)
+      if(ret != -3 && !handledDown){
         handleDoubleClick(key);
+        handledDown = true;
+      }
     }
     lmouseDown = true;
     mouseTimer = startTimer();
@@ -44,6 +47,7 @@ void handleMouseDown(uint8_t key) {
 void handleMouseUp(uint8_t key) {
   if(key == 0){
     lmouseDown = false;
+    handledDown = false;
   } else if(key == 1) {
     rmouseDown = false;
   } else if(key == 2){
@@ -55,6 +59,9 @@ void handleDoubleClick(uint8_t key) {
 }
 
 void handleMouse() {
+  if(!getBit(inportb(0x64), 1)){
+    return;
+  }
   
   _mouseIRQ = true;
 	switch(mouseCycle) {

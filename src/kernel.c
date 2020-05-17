@@ -128,10 +128,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     print("render failed. please restart your computer.");
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
-    set_text_mode(3);
     initAcpi();
-    outportb(0x3D4, 0x0A);
-	outportb(0x3D5, 0x20);
     
    
     // disable blinking bit and use it for background
@@ -139,7 +136,13 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     outportb(0x3C0, 0x30);
     //int _ = inportb(0x3C1);
     outportb(0x3C0, 0b00010100);
+
     sleep(50);
+    terminal_initialize();
+    inportb(0x3DA);
+    set_text_mode(3);
+    outportb(0x3D4, 0x0A);
+	outportb(0x3D5, 0x20);
     //
     
     //print(itoa(mbi->mem_upper, 10));
@@ -288,7 +291,8 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
             terminal_setcolor(VGA_COLOR_GREEN);
             print("\n-----GAMES-----\n");
             terminal_setcolor(VGA_COLOR_LIGHT_GREY);
-            print("\ncookieclk   : Cookie clicker thingy.");
+            print("\ncookieclk   : Cookie clicker thingy");
+            print("\npaint       : Exactly what the name says");
             print("\n\n");
         }
         else if(strequ(cmd,"clear")){
@@ -296,6 +300,9 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
         }
         else if(strequ(cmd,"cookieclk")){
             CookieClickerGame();
+        }
+        else if(strequ(cmd,"paint")){
+            PaintGame();
         }
         else if(strequ(cmd,"guess-game")){
 

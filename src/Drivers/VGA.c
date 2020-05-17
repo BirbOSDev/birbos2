@@ -113,6 +113,12 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	terminal_buffer_layer[index] = vga_entry(c, color);
 }
 
+void buffer_putentryat(uint16_t* buf, char c, uint8_t color, size_t x, size_t y)
+{
+	const size_t index = y * VGA_WIDTH + x;
+	buf[index] = vga_entry(c, color);
+}
+
 void _terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 {
 	const size_t index = y * VGA_WIDTH + x;

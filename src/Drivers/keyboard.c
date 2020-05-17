@@ -20,7 +20,7 @@ uint8_t keyboard_read_key()
 uint8_t old_keyboard_read_key()
 {
     uint8_t key_code = 0;
-	if (inportb(0x64) & 1){
+	if (getBit(inportb(0x64),1)){
         key_code = inportb(0x60);
         
         while(key_code==0){}
