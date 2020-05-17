@@ -11,6 +11,7 @@ struct regs
     unsigned int int_no, err_code;
     unsigned int eip, cs, eflags, useresp, ss;
 };
+char _CPUVENDOR[13];
 int rand(void);
 void beep();
 char setLowerNibble(char orig, char nibble);

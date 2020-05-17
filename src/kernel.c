@@ -129,6 +129,7 @@ void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     memcpy(terminal_buffer, terminal_buffer_layer, 2048*2);
     terminal_initialize();
     initAcpi();
+    cpuidstring(0, _CPUVENDOR);
     
    
     // disable blinking bit and use it for background

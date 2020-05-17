@@ -14,6 +14,10 @@ void PaintGame(){
     int pressTimer = 42069;
     bool ldclick = false;
     bool rdclick = false;
+    int lineX1 = -1;
+    int lineX2 = -1;
+    int lineY1 = -1;
+    int lineY2 = -1;
     int primcolor = 0xF;
     int seccolor = 0x0;
     terminal_initialize();
@@ -46,6 +50,10 @@ void PaintGame(){
                     }
             }
             pressTimer = startTimer();
+        }
+        
+        if(key != 0){
+            continue;
         }
 
 

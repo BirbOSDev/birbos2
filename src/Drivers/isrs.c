@@ -146,8 +146,21 @@ void fault_handler(struct regs *r)
 void custom_fault_handler(char* error)
 {
     terminal_initialize();
-    print("error: ");
-    print(error);
+    /*
+    printf("error: %s", exception_messages[r->int_no]);
+    if(r->int_no == 2){
+        print("\nadditional info:\nsystem control port a: ");
+        print(itoa(inportb(0x92), 2));
+        print("\nsystem control port b: ");
+        print(itoa(inportb(0x61), 2));
+    }
     print("\nsystem halted.");
+    */
+    showTestWindow = false;
+    showMenu = false;
+    renderErrorWindow(error);
+    textAt("system halted", 0x87, VGA_WIDTH/4+1, VGA_WIDTH/4+40, VGA_HEIGHT/5+8);
+    memcpy(terminal_buffer, terminal_buffer_main, VGA_WIDTH*(VGA_HEIGHT+1)*2);
+    disable_all_irqs();
     __asm__ __volatile__ ("cli\nhlt");
 }

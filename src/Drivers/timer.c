@@ -38,9 +38,22 @@ void timer_handler(struct regs *r)
     timer_ticks++;
     if(timer_ticks % 1000 == 0){
         read_rtc();
+        for(int i = 0; i<13; i++){
+            srand(_CPUVENDOR[i]);
+            rand();
+        }
         //maxrand(rtcGetUnixTimestamp(), INT32_MAX);
     }
     maxrand(timer_ticks ^ rtcGetUnixTimestamp(), INT32_MAX);
+
+    srand(mouseX);
+    rand();
+    srand(mouseY);
+    rand();
+    srand(mouseByte[0]);
+    rand();
+    
+    
     
     
 
