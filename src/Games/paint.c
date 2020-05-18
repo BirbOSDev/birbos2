@@ -12,6 +12,7 @@ void PaintGame(){
     int lclicktimer = 42069;
     int rclicktimer = 42069;
     int pressTimer = 42069;
+    char brush = 219;
     bool ldclick = false;
     bool rdclick = false;
     int lineX1 = -1;
@@ -62,15 +63,23 @@ void PaintGame(){
                 primcolor = mouseX/3;
             }
 
+            if(mouseY == VGA_HEIGHT-1 && mouseX > (16*3+1) && mouseX<(16*3+6)){
+                if(mouseX<(16*3+5)){
+                    brush = mouseX-16*3 + 174;
+                } else {
+                    brush = 219;
+                }
+            }
+
             int _ms = stopTimer(lclicktimer);
             
-            buffer_putentryat(paintBuffer[currentBuf], 219, setUpperNibble(primcolor, primcolor), mouseX, mouseY);
+            buffer_putentryat(paintBuffer[currentBuf], brush, primcolor, mouseX, mouseY);
 
             if(_ms < 75){
                 if(_ms > 1 && !handledLDwn){
                     for(int i = 0; i<VGA_HEIGHT; i++){
                         for(int j = 0; j<VGA_WIDTH; j++){
-                            buffer_putentryat(paintBuffer[currentBuf], 219, setUpperNibble(primcolor, primcolor), j, i);
+                            buffer_putentryat(paintBuffer[currentBuf], brush, primcolor, j, i);
                         }
                     }
                 }
@@ -88,12 +97,12 @@ void PaintGame(){
             int _ms = stopTimer(rclicktimer);
             
 
-            buffer_putentryat(paintBuffer[currentBuf], 219, setUpperNibble(seccolor, seccolor), mouseX, mouseY);
+            buffer_putentryat(paintBuffer[currentBuf], brush, seccolor, mouseX, mouseY);
             if(_ms < 75){
                 if(_ms > 1 && !handledRDwn){
                     for(int i = 0; i<VGA_HEIGHT; i++){
                         for(int j = 0; j<VGA_WIDTH; j++){
-                            buffer_putentryat(paintBuffer[currentBuf], 219, setUpperNibble(seccolor, seccolor), j, i);
+                            buffer_putentryat(paintBuffer[currentBuf], brush, seccolor, j, i);
                         }
                     }
                 }
@@ -105,12 +114,17 @@ void PaintGame(){
         }
         for(int j = 1; j<3; j++){
         for(int i = 0; i<16*3; i++){
-            buffer_putentryat(paintBuffer[currentBuf], 219, setUpperNibble(i/3, i/3), i, VGA_HEIGHT-j);
+            buffer_putentryat(paintBuffer[currentBuf], brush, i/3, i, VGA_HEIGHT-j);
         }
         for(int i = 16*3; i<VGA_WIDTH; i++){
-            buffer_putentryat(paintBuffer[currentBuf], 219, 0x88, i, VGA_HEIGHT-j);
+            buffer_putentryat(paintBuffer[currentBuf], brush, 0x88, i, VGA_HEIGHT-j);
         }
         }
+
+        buffer_putentryat(paintBuffer[currentBuf], 176, 0x87, 16*3+2, VGA_HEIGHT-1);
+        buffer_putentryat(paintBuffer[currentBuf], 177, 0x87, 16*3+3, VGA_HEIGHT-1);
+        buffer_putentryat(paintBuffer[currentBuf], 178, 0x87, 16*3+4, VGA_HEIGHT-1);
+        buffer_putentryat(paintBuffer[currentBuf], 219, 0x87, 16*3+5, VGA_HEIGHT-1);
         char* name = "paint";
         for(int i = 0; i<strlen(name); i++){
             buffer_putentryat(paintBuffer[currentBuf], name[i], 0x87, i+(VGA_WIDTH-strlen(name)), VGA_HEIGHT-2);
@@ -120,7 +134,6 @@ void PaintGame(){
         for(int i = 0; i<strlen(no); i++){
             buffer_putentryat(paintBuffer[currentBuf], no[i], 0x87, i+(VGA_WIDTH-strlen(no)), VGA_HEIGHT-1);
         }
-
         memcpy(terminal_buffer_layer, paintBuffer[currentBuf], 90*50*2);
     }
     terminal_initialize();
