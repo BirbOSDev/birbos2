@@ -4,6 +4,9 @@ Some of the code has been taken from the xv6 repository but mostly it is written
 # compiling
 So you thought you need a cross compiler 
 nah you just need gcc and nasm
+just type 
+`make qemu` for gui
+`make qemu-nox` for using it in bash
 # writing applications for it
 well create the application like hello world
 ```
