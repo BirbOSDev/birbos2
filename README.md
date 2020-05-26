@@ -32,7 +32,7 @@ hello.c\
  README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
  .gdbinit.tmpl gdbutil\
 ```
-<program name>.c\
+`<program name>.c\`
 add the file here
 and
 ```
@@ -59,7 +59,7 @@ _wc\
 _zombie\
 _hello\
 ```
-here _<program name>
+here `_<program name>`
 
 
 done
