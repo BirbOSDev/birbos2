@@ -10,9 +10,8 @@ just type
 # writing applications for it
 well create the application like hello world
 ```
-include "types.h"
-include "stat.h"
-include "user.h"
+#include "types.h"
+#include "stat.h"
 #include "user.h"
 int main(){
   printf(1, "Hello, world!\n");
