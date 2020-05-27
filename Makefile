@@ -95,10 +95,10 @@ birb.img: bootblock kernel
 	dd if=bootblock of=birb.img conv=notrunc
 	dd if=kernel of=birb.img seek=1 conv=notrunc
 
-xv6memfs.img: bootblock kernelmemfs
-	dd if=/dev/zero of=xv6memfs.img count=10000
-	dd if=bootblock of=xv6memfs.img conv=notrunc
-	dd if=kernelmemfs of=xv6memfs.img seek=1 conv=notrunc
+birbmemfs.img: bootblock kernelmemfs
+	dd if=/dev/zero of=birbmemfs.img count=10000
+	dd if=bootblock of=birbmemfs.img conv=notrunc
+	dd if=kernelmemfs of=birbmemfs.img seek=1 conv=notrunc
 
 bootblock: bootasm.S bootmain.c
 	$(CC) $(CFLAGS) -fno-pic -O -nostdinc -I. -c bootmain.c
@@ -191,7 +191,7 @@ clean:
 	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
 	*.o *.d *.asm *.sym vectors.S bootblock entryother \
 	initcode initcode.out kernel birb.img fs.img kernelmemfs \
-	xv6memfs.img mkfs .gdbinit \
+	birbmemfs.img mkfs .gdbinit \
 	$(UPROGS)
 
 # make a printout
@@ -224,8 +224,8 @@ QEMUOPTS = -drive file=fs.img,index=1,media=disk,format=raw -drive file=birb.img
 qemu: fs.img birb.img
 	$(QEMU) -serial mon:stdio $(QEMUOPTS)
 
-qemu-memfs: xv6memfs.img
-	$(QEMU) -drive file=xv6memfs.img,index=0,media=disk,format=raw -smp $(CPUS) -m 256
+qemu-memfs: birbmemfs.img
+	$(QEMU) -drive file=birbmemfs.img,index=0,media=disk,format=raw -smp $(CPUS) -m 256
 
 qemu-nox: fs.img birb.img
 	$(QEMU) -nographic $(QEMUOPTS)
