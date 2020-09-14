@@ -107,7 +107,7 @@ char birb_ascii[40][72] = {
 
 
 
-
+//main
 void kernel_main(multiboot_info_t* mbi, unsigned int magic){
     timer_install(1000);
     int _boot_timer_ = startTimer();
