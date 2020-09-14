@@ -1,0 +1,6 @@
+
+*.iso
+*.elf
+*.o
+isodir/boot/grub/grub.cfg
+BirbOS.iso
