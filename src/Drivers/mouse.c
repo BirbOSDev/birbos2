@@ -20,7 +20,8 @@ unsigned char lcolor = 0x01;
 unsigned char rcolor = 0x04;
 unsigned char mcolor = 0x02;
 unsigned char dcolor = 0x07;
-
+extern int VGA_WIDTH;
+extern int VGA_HEIGHT;
 
 int oldmouseX = 0;
 int oldmouseY = 0;

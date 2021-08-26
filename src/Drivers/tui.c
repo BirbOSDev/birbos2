@@ -13,6 +13,25 @@ int __prevX = 0;
 int __prevY = 0;
 int __grabX = 0;
 int renderdelay = 5;
+extern uint16_t* terminal_buffer;
+extern bool barEnabled;
+extern uint16_t terminal_buffer_main[90*60*2];
+extern unsigned char second;
+extern unsigned char minute;
+extern unsigned char hour;
+extern unsigned char day;
+extern unsigned char month;
+extern unsigned char weekday;
+extern unsigned int year;
+extern unsigned char century;
+extern bool lmouseDown;
+extern bool terminalmousecursor;
+extern unsigned char dcolor;
+extern int VGA_WIDTH;
+extern int VGA_HEIGHT;
+extern uint16_t terminal_buffer_layer[90*60*2];
+extern int16_t mouseX;
+extern int16_t mouseY;
 
 void drawBox(uint8_t c, uint8_t col, int x, int x2, int y, int y2){
     for(int i = x; i<x2; i++){

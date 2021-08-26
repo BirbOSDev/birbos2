@@ -23,19 +23,19 @@
 #define VGA_COLOR_LIGHT_BROWN 14
 #define VGA_COLOR_WHITE 15
 
-int VGA_WIDTH;
-int VGA_HEIGHT;
+/* int VGA_WIDTH;
+int VGA_HEIGHT;*/
 
-uint8_t* screen;
-unsigned int terminal_row;
-uint8_t terminal_color;
-unsigned int terminal_column;
-uint16_t* terminal_buffer;
-bool terminalScrolling;
-unsigned int terminalScrolls;
-bool barEnabled;
-uint16_t terminal_buffer_layer[90*60*2];
-uint16_t terminal_buffer_main[90*60*2];
+/* uint8_t* screen; */
+/* unsigned int terminal_row; */
+/* uint8_t terminal_color; */
+/* unsigned int terminal_column; */
+/* uint16_t* terminal_buffer; */
+/* bool terminalScrolling; */
+/* unsigned int terminalScrolls; */
+/* bool barEnabled; */
+/* uint16_t terminal_buffer_layer[90*60*2]; */
+/* uint16_t terminal_buffer_main[90*60*2]; */
 
 void barTask();
 void update_cursor(uint16_t x, uint16_t y);

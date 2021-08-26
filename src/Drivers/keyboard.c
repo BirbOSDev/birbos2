@@ -3,7 +3,7 @@
 
 
 _keyboardirq = 0;
-
+char inp[1024];
 
 void keyboard_send_key(uint8_t b){
     outportb(0x60, b);

@@ -10,6 +10,13 @@ void * malloc(int nbytes){
 	return &variable;
 }
 
+extern uint16_t terminal_buffer_layer[90*60*2];
+extern int renderdelay;
+extern int VGA_WIDTH;
+extern int VGA_HEIGHT;
+extern uint16_t* terminal_buffer;
+char _CPUVENDOR[13];
+extern uint8_t* screen;
 uint16_t buffer[90*60*2];
 
 void int_to_ascii(int n, char str[]) {          

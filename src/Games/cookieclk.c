@@ -3,6 +3,9 @@
 #include "../common.h"
 #include "../all_drivers.h"
 
+extern bool lmouseDown;
+extern int16_t mouseX;
+extern int16_t mouseY;
 
 char cookieNormal[16][52] = {                                           
 "                 .........                        \n",

@@ -1,8 +1,14 @@
 #include "../common.h"
 #include "../all_drivers.h"
 
-
-
+unsigned char minute;
+unsigned char hour;
+unsigned char day;
+unsigned char month;
+unsigned char weekday;
+unsigned int year;
+unsigned char century;
+unsigned char second;
 century_register = 0x32; 
  
 

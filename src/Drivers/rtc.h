@@ -1,15 +1,15 @@
 #include "../common.h"
 #include "../all_drivers.h"
 
-int century_register;
-unsigned char second;
-unsigned char minute;
+/* int century_register; */
+/* unsigned char second; */
+/* unsigned char minute;
 unsigned char hour;
 unsigned char day;
 unsigned char month;
 unsigned char weekday;
 unsigned int year;
-unsigned char century;
+unsigned char century;*/
  
  
 enum {

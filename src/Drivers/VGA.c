@@ -6,10 +6,12 @@
 VGA_WIDTH = 90;
 VGA_HEIGHT = 59;
 
-
+uint16_t* terminal_buffer;
 uint8_t* screen = (uint8_t*)0xA0000;
 bool terminalScrolling = false;
 unsigned int terminalScrolls = 0;
+uint16_t terminal_buffer_main[90*60*2];
+uint16_t terminal_buffer_layer[90*60*2];
 
 void putpixel(int x,int y, int color) {
     unsigned where = x*3 + y*2400;

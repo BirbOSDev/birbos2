@@ -4,7 +4,8 @@
 #include "../common.h"
 #include "VGA.h"
 
-
+extern int VGA_WIDTH;
+extern int VGA_HEIGHT;
 
 #define	peekb(S,O)		*(unsigned char *)(16uL * (S) + (O))
 #define	pokeb(S,O,V)		*(unsigned char *)(16uL * (S) + (O)) = (V)

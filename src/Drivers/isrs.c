@@ -1,6 +1,13 @@
 #include "../common.h"
 #include "../all_drivers.h"
 
+extern bool showWeekday;
+extern bool showTestWindow;
+extern int VGA_WIDTH;
+extern int VGA_HEIGHT;
+extern bool showMenu;
+extern uint16_t terminal_buffer_main[90*60*2];
+extern uint16_t* terminal_buffer;
 extern void _isr0();
 extern void _isr1();
 extern void _isr2();
