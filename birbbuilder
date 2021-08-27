@@ -3,7 +3,7 @@
 set -e
 cd $(dirname $(readlink -f $0))
 clear
-echo "BirbOS 2.0 ISO builder r3"
+echo "BirbOS 2.0 ISO builder r4"
 echo "Made by seal331 (https://github.com/seal331)"
 echo "Report bugs to https://github.com/seal331/birbos2"
 echo "This script will exit in case of any errors."
@@ -14,8 +14,8 @@ select option in "Clean up" "Compile BirbOS 2.0 ISO" "Run BirbOS (requires qemu-
 do
         case $option in 
         "Clean up")
-		echo "rm -rf $(dirname $0)/debug $(dirname $0)/isodir $(dirname $0)/serial.log $(dirname $0)/BirbOS.iso"
-		rm -rf $(dirname $0)/debug $(dirname $0)/isodir $(dirname $0)/serial.log $(dirname $0)/BirbOS.iso
+		echo "rm -rf $(dirname $(readlink -f $0))/debug $(dirname $(readlink -f $0))/isodir $(dirname $(readlink -f $0))/serial.log $(dirname $(readlink -f $0))/BirbOS.iso"
+		rm -rf $(dirname $(readlink -f $0))/debug $(dirname $(readlink -f $0))/isodir $(dirname $(readlink -f $0))/serial.log $(dirname $(readlink -f $0))/BirbOS.iso
 		echo "Done, press any key to return to menu"
 		read -n 1
 		. $(dirname $0)/$(basename $0)
