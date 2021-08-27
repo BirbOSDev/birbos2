@@ -5,6 +5,14 @@
 bool handledLDwn = false;
 bool handledRDwn = false;
 uint16_t paintBuffer[512][90*50*2];
+extern uint16_t* terminal_buffer;
+extern bool lmouseDown;
+extern bool rmouseDown;
+extern int VGA_WIDTH;
+extern int VGA_HEIGHT;
+extern uint16_t terminal_buffer_layer[90*60*2];
+extern int16_t mouseX;
+extern int16_t mouseY;
 
 void PaintGame(){
     uint8_t key;

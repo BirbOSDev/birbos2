@@ -2,8 +2,10 @@
 #include "mouse.h"
 unsigned long timer_ticks;
 extern terminal_start;
-
-
+extern char _CPUVENDOR[13];
+extern uint8_t mouseByte[4];
+extern int16_t mouseX;
+extern int16_t mouseY;
 
 void (*tasks[64]) (int taskno) = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 int timers[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
