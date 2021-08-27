@@ -1,9 +1,9 @@
 #!/bin/bash
 
 set -e
-cd $(dirname $0)
+cd $(dirname $(readlink -f $0))
 clear
-echo "BirbOS 2.0 ISO builder r2"
+echo "BirbOS 2.0 ISO builder r3"
 echo "Made by seal331 (https://github.com/seal331)"
 echo "Report bugs to https://github.com/seal331/birbos2"
 echo "This script will exit in case of any errors."
