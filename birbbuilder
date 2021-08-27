@@ -1,8 +1,9 @@
 #!/bin/bash
 
 set -e
+cd $(dirname $0)
 clear
-echo "BirbOS 2.0 ISO builder r1"
+echo "BirbOS 2.0 ISO builder r2"
 echo "Made by seal331 (https://github.com/seal331)"
 echo "Report bugs to https://github.com/seal331/birbos2"
 echo "This script will exit in case of any errors."
@@ -17,7 +18,7 @@ do
 		rm -rf $(dirname $0)/debug $(dirname $0)/isodir $(dirname $0)/serial.log $(dirname $0)/BirbOS.iso
 		echo "Done, press any key to return to menu"
 		read -n 1
-		. $(dirname $0)/$0
+		. $(dirname $0)/$(basename $0)
 		;;
 	"Compile BirbOS 2.0 ISO")
 		echo "mkdir -p debug" && mkdir -p debug
@@ -49,13 +50,13 @@ do
 		echo "grub-mkrescue -o BirbOS.iso isodir" && grub-mkrescue -o BirbOS.iso isodir
 		echo "Done, press any key to return to menu"
                 read -n 1
-                . $(dirname $0)/$0
+                . $(dirname $0)/$(basename $0)
 		;;
 	"Run BirbOS (requires qemu-system-i386)")
 		echo "qemu-system-i386 BirbOS.iso -serial file:serial.log" && qemu-system-i386 BirbOS.iso -serial file:serial.log
 		echo "Done, press any key to return to menu"
                 read -n 1
-                . $(dirname $0)/$0
+                . $(dirname $0)/$(basename $0)
                 ;;
 	"Quit")
                 exit
