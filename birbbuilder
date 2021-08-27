@@ -1,0 +1,68 @@
+#!/bin/bash
+
+set -e
+clear
+echo "BirbOS 2.0 ISO builder r1"
+echo "Made by seal331 (https://github.com/seal331)"
+echo "Report bugs to https://github.com/seal331/birbos2"
+echo "This script will exit in case of any errors."
+echo ""
+echo "Please select an option"
+
+select option in "Clean up" "Compile BirbOS 2.0 ISO" "Run BirbOS (requires qemu-system-i386)" "Quit"
+do
+        case $option in 
+        "Clean up")
+		echo "rm -rf $(dirname $0)/debug $(dirname $0)/isodir $(dirname $0)/serial.log $(dirname $0)/BirbOS.iso"
+		rm -rf $(dirname $0)/debug $(dirname $0)/isodir $(dirname $0)/serial.log $(dirname $0)/BirbOS.iso
+		echo "Done, press any key to return to menu"
+		read -n 1
+		. $(dirname $0)/$0
+		;;
+	"Compile BirbOS 2.0 ISO")
+		echo "mkdir -p debug" && mkdir -p debug
+		echo "nasm -f elf32 src/boot.asm -o debug/boot.o" && nasm -f elf32 src/boot.asm -o debug/boot.o
+
+		echo "i686-elf-gcc -w -c src/kernel.c -o debug/kernel.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/kernel.c -o debug/kernel.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/common.c -o debug/common.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/common.c -o debug/common.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/keyboard.c -o debug/keyboard.o -m32 -std=gnu99 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/keyboard.c -o debug/keyboard.o -m32 -std=gnu99 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/VGA.c -o debug/VGA.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/VGA.c -o debug/VGA.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/irq.c -o debug/irq.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/irq.c -o debug/irq.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/isrs.c -o debug/isrs.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/isrs.c -o debug/isrs.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/gdt.c -o debug/gdt.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/gdt.c -o debug/gdt.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/timer.c -o debug/timer.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/timer.c -o debug/timer.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/idt.c -o debug/idt.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/idt.c -o debug/idt.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/sound.c -o debug/sound.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/sound.c -o debug/sound.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/acpi.c -o debug/acpi.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/acpi.c -o debug/acpi.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/mouse.c -o debug/mouse.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/mouse.c -o debug/mouse.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/rtc.c -o debug/rtc.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/rtc.c -o debug/rtc.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/tui.c -o debug/tui.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/tui.c -o debug/tui.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Drivers/videomode.c -o debug/videomode.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Drivers/videomode.c -o debug/videomode.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Games/cookieclk.c -o debug/cookieclk.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Games/cookieclk.c -o debug/cookieclk.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+		echo "i686-elf-gcc -w -c src/Games/paint.c -o debug/paint.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra" && i686-elf-gcc -w -c src/Games/paint.c -o debug/paint.o -std=gnu99 -m32 -ffreestanding -masm=intel -O2 -Wall -Wextra
+
+		echo "i686-elf-ld -T src/linker.ld -o debug/kernel.elf debug/boot.o debug/kernel.o debug/irq.o debug/idt.o debug/timer.o debug/gdt.o debug/isrs.o debug/common.o debug/keyboard.o debug/VGA.o debug/sound.o debug/acpi.o debug/mouse.o debug/rtc.o debug/tui.o debug/videomode.o debug/cookieclk.o debug/paint.o" && i686-elf-ld -T src/linker.ld -o debug/kernel.elf debug/boot.o debug/kernel.o debug/irq.o debug/idt.o debug/timer.o debug/gdt.o debug/isrs.o debug/common.o debug/keyboard.o debug/VGA.o debug/sound.o debug/acpi.o debug/mouse.o debug/rtc.o debug/tui.o debug/videomode.o debug/cookieclk.o debug/paint.o
+
+		echo "mkdir -p isodir/boot/grub" && mkdir -p isodir/boot/grub
+		echo "cp debug/kernel.elf isodir/boot/kernel.elf" && cp debug/kernel.elf isodir/boot/kernel.elf
+		echo "cp grub.cfg isodir/boot/grub/grub.cfg" && cp grub.cfg isodir/boot/grub/grub.cfg
+		echo "grub-mkrescue -o BirbOS.iso isodir" && grub-mkrescue -o BirbOS.iso isodir
+		echo "Done, press any key to return to menu"
+                read -n 1
+                . $(dirname $0)/$0
+		;;
+	"Run BirbOS (requires qemu-system-i386)")
+		echo "qemu-system-i386 BirbOS.iso -serial file:serial.log" && qemu-system-i386 BirbOS.iso -serial file:serial.log
+		echo "Done, press any key to return to menu"
+                read -n 1
+                . $(dirname $0)/$0
+                ;;
+	"Quit")
+                exit
+                ;;
+        *)
+                echo "Invalid option" 
+                ;;
+        esac
+done
+
