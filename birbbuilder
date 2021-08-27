@@ -3,7 +3,7 @@
 set -e
 cd $(dirname $(readlink -f $0))
 clear
-echo "BirbOS 2.0 ISO builder r4"
+echo "BirbOS 2.0 ISO builder r5"
 echo "Made by seal331 (https://github.com/seal331)"
 echo "Report bugs to https://github.com/seal331/birbos2"
 echo "This script will exit in case of any errors."
@@ -21,6 +21,11 @@ do
 		. $(dirname $0)/$(basename $0)
 		;;
 	"Compile BirbOS 2.0 ISO")
+		command -v i686-elf-gcc >/dev/null 2>&1 || { echo >&2 "i686-elf-gcc is required but not installed or not in PATH. Aborting."; exit 1; }
+		command -v nasm >/dev/null 2>&1 || { echo >&2 "NASM is required but not installed or not in PATH. Aborting."; exit 1; }
+		command -v mformat >/dev/null 2>&1 || { echo >&2 "mtools are required but not installed or not in PATH. Aborting."; exit 1; }
+		command -v xorriso >/dev/null 2>&1 || { echo >&2 "xorriso is required but not installed or not in PATH. Aborting."; exit 1; }
+		command -v grub-mkrescue >/dev/null 2>&1 || { echo >&2 "GRUB mkrescue tool is required but not installed or not in PATH. Aborting."; exit 1; }
 		echo "mkdir -p debug" && mkdir -p debug
 		echo "nasm -f elf32 src/boot.asm -o debug/boot.o" && nasm -f elf32 src/boot.asm -o debug/boot.o
 
@@ -53,6 +58,15 @@ do
                 . $(dirname $0)/$(basename $0)
 		;;
 	"Run BirbOS (requires qemu-system-i386)")
+		FILE=$(dirname $(readlink -f $0))/BirbOS.iso
+		if [ -f "$FILE" ]; then
+			:
+		else
+			echo "BirbOS.iso not found, please compile BirbOS first. Press any key to return to the menu."
+			read -n 1
+                	. $(dirname $0)/$(basename $0)
+		fi
+		command -v qemu-system-i386 >/dev/null 2>&1 || { echo >&2 "qemu-system-i386 is required but not installed or not in PATH. If you want to use the ISO in any other emulator, please use the file BirbOS.iso stored in $(dirname $(readlink -f $0)). Aborting."; exit 1; }
 		echo "qemu-system-i386 BirbOS.iso -serial file:serial.log" && qemu-system-i386 BirbOS.iso -serial file:serial.log
 		echo "Done, press any key to return to menu"
                 read -n 1
