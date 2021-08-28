@@ -18,7 +18,7 @@ Unsupported. Seriously, where will you get GRUB tools? Figure it out yourself if
 Unsupported. Seriously, where will you get GRUB tools? Figure it out yourself if you want.
 
 ## Linux (non-Gentoo)
-Install deps, run birbbuilder, then just read.
+Install deps, run `make`, to run BirbOS run `make run`.
 
 ## Gentoo Linux
 Install my overlay ( https://github.com/seal331/gentoo-overlay ) and emerge app-misc/birbbuilder.
