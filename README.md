@@ -1,5 +1,5 @@
-# BirbBuilder
-Basically a fat script for everything BirbOS. Cleaning, running, compiling, etc.
+# BirbOS 2.0
+lol birb go brrrrrrrrrrrrrrrrrrrrr
 
 # Prerequisites
 To set up and use BirbOS 2.0 you need:
@@ -9,7 +9,7 @@ To set up and use BirbOS 2.0 you need:
 4. mtools (to make the disk image)
 5. qemu-system-i386 (supported way of running BirbOS)
 
-# How to use
+# How to compile and run
 
 ## Windows
 Unsupported. Seriously, where will you get GRUB tools? Figure it out yourself if you want.
@@ -21,4 +21,4 @@ Unsupported. Seriously, where will you get GRUB tools? Figure it out yourself if
 Install deps, run `make`, to run BirbOS run `make run`.
 
 ## Gentoo Linux
-Install my overlay ( https://github.com/seal331/gentoo-overlay ) and emerge app-misc/birbbuilder.
+Install my overlay ( https://github.com/seal331/gentoo-overlay ), emerge app-misc/birbbuilder and run birbbuilder.
