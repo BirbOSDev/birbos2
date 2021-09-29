@@ -1,3 +1,2 @@
 # fuk
-fuck birbose
-yes
+proper birbos coming soon
